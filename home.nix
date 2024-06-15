@@ -8,14 +8,15 @@
 
 let
   homePkgs = import /home/shade/.config/home-manager/pack/homepack.nix { inherit pkgs; };
-  pythonWithPackages = import /home/shade/.config/home-manager/pack/pypack.nix { inherit pkgs; };
   fontPackages = import /home/shade/.config/home-manager/pack/fontpack.nix { inherit pkgs; };
+  pypack = import ./pack/pypack.nix { inherit pkgs; };
   nixvim = import (builtins.fetchGit {
 	url = "https://github.com/nix-community/nixvim";
   });
 in
 
 {
+
   imports = [
 	nixvim.homeManagerModules.nixvim
   ];
@@ -24,11 +25,11 @@ in
 ######################################
   home.username = "shade";
   home.homeDirectory = "/home/shade";
-
-  home.stateVersion = "23.11";
+  home.enableNixpkgsReleaseCheck = false;
+  home.stateVersion = "24.11";
 
   fonts.fontconfig.enable = true;
-  home.packages = with pkgs ; [ pythonWithPackages ] ++ fontPackages ++ homePkgs;
+  home.packages = with pkgs ; [ pypack.pythonWithPackages ] ++ fontPackages ++ homePkgs;
   nixpkgs.config.allowUnfree = true;
 
 ######################################
@@ -40,7 +41,7 @@ in
 	enableMan = true;
 	colorschemes = {
 		base16.enable = true;
-		base16.colorscheme = "brewer"; 
+		base16.colorscheme = "brewer";
 #		base16.colorscheme = {
 #			base00 = "#00000B";
 #			base01 = "#404040";
@@ -71,8 +72,6 @@ in
 		ruler = true;
 	};
 	plugins = {
-		copilot-vim.enable = false;
-		commentary.enable = true;
 		hardtime = {
 			enable = true;
 			disableMouse = true;
@@ -105,28 +104,166 @@ in
 				};
 			};
 		};
+		codeium-vim = {
+			enable = true;
+			settings = {
+				manual = true;
+			};
+			keymaps.next = "<C-;>";
+			keymaps.prev = "<C-,>";
+			keymaps.accept = "<C-Tab>";
+			keymaps.complete = "<F1>";
+		};
+		trim = {
+			enable = true;
+			settings.highlight = true;
+		};
+		neoscroll = {
+			enable = true;
+			settings.hide_cursor = false;
+		};
+		twilight = {
+			enable = false;
+			settings.context = 20;
+		};
+		gitsigns.enable = true;
+		fugitive.enable = true;
 		cmp.enable = true;
-		debugprint.enable = true;
+		neogit.enable = true;
+		refactoring.enable = true;
+		floaterm.enable = true;
+		neocord.enable = true;
+		marks.enable = true;
+		undotree.enable = true;
 		endwise.enable = true;
 		barbar.enable = true;
 		indent-blankline.enable = true;
 		coq-nvim = {
 			enable = true;
 			installArtifacts = true;
-			settings.auto_start = true;
+			settings.auto_start = false;
 			};
 		treesitter = {
 			enable = true;
 			indent = true;
 			nixvimInjections = true;
 		};
-		toggleterm.enable = true;
 		trouble.enable = true;
 		surround.enable = true;
 		telescope.enable = true;
 	};
 	extraPlugins = with pkgs.vimPlugins; [
 		vim-slash
+		vim-sneak
+	];
+	autoCmd = [
+		{
+		event = [ "InsertEnter" ];
+		pattern = [ "*" ];
+		command = "setlocal nocursorline nocursorcolumn";
+		}
+		{
+		event = [ "VimEnter" "InsertLeave" ];
+		pattern = [ "*" ];
+		command = "setlocal cursorline cursorcolumn";
+		}
+		{
+		event = [ "VimEnter" ];
+		pattern = [ "*" ];
+		command = "set statusline=%{get(b:,'gitsigns_status','')}\\ %f\\ %h%m%r%=%-14.(%l,%c%V%)\\ %P";
+		}
+		{
+		event = [ "VimEnter" ];
+		pattern = [ "*" ];
+		command = "TroubleToggle";
+		}
+		{
+		event = [ "VimEnter" ];
+		pattern = [ "*" ];
+		command = "wincmd p";
+		}
+		{
+		event = [ "VimEnter" ];
+		pattern = [ "*" ];
+		command = "FloatermNew --wintype=float --name=shadeterm --position=topright --autoclose=0 --silent --cwd=<buffer> --titleposition=left";
+		}
+		{
+		event = [ "VimEnter" ];
+		pattern = [ "*" ];
+		command = "set foldmethod=indent";
+		}
+		{
+		event = [ "VimEnter" ];
+		pattern = [ "*" ];
+		command = "set undofile";
+		}
+	];
+	keymaps = [
+		{
+			action = "<Cmd>BufferNext<CR>";
+			key = "<A-]>";
+			mode = [ "n" ];
+		}
+		{
+			action = "<Cmd>BufferPrevious<CR>";
+			key = "<A-[>";
+			mode = [ "n" ];
+		}
+		{
+			action = "<Cmd>BufferMovePrevious<CR>";
+			key = "<C-[>";
+			mode = [ "n" ];
+		}
+		{
+			action = "<Cmd>BufferMoveNext<CR>";
+			key = "<C-]>";
+			mode = [ "n" ];
+		}
+		{
+			action = "zA";
+			key = "<space>";
+			mode = [ "n" ];
+		}
+		{
+			action = ":FloatermToggle shadeterm<CR>";
+			key = "<F2>";
+			mode = [ "n" ];
+		}
+		{
+			action = ":FloatermNew --wintype=float --name=rangerterm --position=topleft --autoclose=2 --opener=edit --cwd=<buffer> --titleposition=left ranger<CR><CR>";
+			key = "<F3>";
+			mode = [ "n" ];
+		}
+		{
+			action = "<C-\\><C-n>:FloatermToggle shadeterm<CR>";
+			key = "<F2>";
+			mode = [ "t" ];
+		}
+		{
+			action = "<C-\\><C-n>:FloatermKill rangerterm<CR>";
+			key = "<F3>";
+			mode = [ "t" ];
+		}
+		{
+			action = "<Esc>";
+			key = "<Esc>";
+			mode = [ "n" "i" "v" "c" ];
+		}
+		{
+			action = "function() require('refactoring').debug.printf({below = false})";
+			key = "<leader>rp";
+			mode = [ "n" ];
+		}
+		{
+			action = "function() require('refactoring').debug.print_var()";
+			key = "<leader>rv";
+			mode = [ "x" "n" ];
+		}
+		{
+			action = "function() require('refactoring').debug.cleanup({})";
+			key = "<leader>rc";
+			mode = [ "n" ];
+		}
 	];
 	extraConfigVim = ''
 		command! Togglenum call ToggleNumbers()
@@ -140,21 +277,6 @@ in
 		endfunction
 
 		lua vim.diagnostic.config({ signs = false })
-
-		autocmd InsertEnter * setlocal nocursorline nocursorcolumn
-		autocmd VimEnter,InsertLeave * setlocal cursorline
-		autocmd VimEnter,InsertLeave * setlocal cursorcolumn
-		autocmd VimEnter * TroubleToggle 
-		autocmd VimEnter * wincmd p
-		nnoremap <silent>    <A-[> <Cmd>BufferPrevious<CR>
-		nnoremap <silent>    <A-]> <Cmd>BufferNext<CR>	
-		nnoremap <silent>    <C-[> <Cmd>BufferMovePrevious<CR>
-		nnoremap <silent>    <C-]> <Cmd>BufferMoveNext<CR>
-		nnoremap <space> zA
-		inoremap {<CR> {<CR>}<C-o>O
-		inoremap [<CR> [<CR>]<C-o>O
-		inoremap (<CR> (<CR>)<C-o>O
-		set foldmethod=indent
 	'';
   };
 
@@ -164,45 +286,45 @@ in
 		#!/run/current-system/sw/bin/bash
 
 
-		nix_search () { 
+		nix_search () {
 			echo "$(cat ~/bin/packages.list)" | grep "$1" | awk '{print $1}'
 		}
 		nix_install () {
 			if [ -z $1 ]; then echo "input a package name"
-			elif sudo grep -q "$1" ~/bin/pack.nix; then 
+			elif sudo grep -q "$1" /home/shade/.config/home-manager/pack/homepack.nix; then
 			  echo "package already installed"
-			else 
-			  sed -i "/^\]/i$1" "pack.nix"
+			else
+			  sed -i "/^\]/i$1" "/home/shade/.config/home-manager/pack/homepack.nix"
 			  echo "added $1 to pack.txt, rebuild? (y/n)"
-			  rebuildprompt  
+			  rebuildprompt
 			fi
 		}
 		nix_install_font () {
 			if [ -z $1 ]; then echo "input a package name"
-			elif sudo grep -q "$1" ~/bin/fontpack.nix; then 
+			elif sudo grep -q "$1" /home/shade/.config/home-manager/pack/fontpack.nix; then
 			  echo "package already installed"
-			else 
-			  sed -i "/^\]/i$1" "fontpack.nix"
+			else
+			  sed -i "/^\]/i$1" "/home/shade/.config/home-manager/pack/fontpack.nix"
 			  echo "added $1 to fontpack.txt, rebuild? (y/n)"
-			  rebuildprompt  
+			  rebuildprompt
 			fi
 		}
 		nix_pip () {
 			if [ -z $1 ]; then echo "input a python package name"
-			elif grep -q "$1" ~/bin/pypack.nix; then
+			elif grep -q "$1" /home/shade/.config/home-manager/pack/pypack.nix; then
 				echo "python package already installed"
 			else
-				sed -i "/^])/i$1" "pypack.nix"
+				sed -i "/^])/i$1" "/home/shade/.config/home-manager/pack/pypack.nix"
 				echo "added $1 to pypack.nix, rebuild? (y/n)"
 				rebuildprompt
 			fi
 		}
-		nix_find_path () { 
+		nix_find_path () {
 			sudo find / -name "$1"
 		 }
-		nix_remove () { 
-			sed -i "/$1/d" ~/bin/pack.txt
-			echo "$1 removed from pack.txt"
+		nix_remove () {
+			sed -i "/$1/d" /home/shade/.config/home-manager/pack/homepack.nix
+			echo "$1 removed from homepack.nix"
 			echo "rebuild? (y/n)"
 			rebuildprompt
 		}
@@ -225,13 +347,13 @@ in
 		}
 		nix_installed () {
 			if [ -n "$1" ] && [ $1 == "open" ]; then
-				nvim ~/bin/pack.txt
+				nvim /home/shade/.config/home-manager/pack/homepack.nix
 				return 0
 			elif [ -n "$1" ] && [ $1 != "open" ]; then
 				echo "invalid option"
 				return 1
 			else
-				cat ~/bin/pack.txt
+				cat /home/shade/.config/home-manager/pack/homepack.nix
 			fi
 		}
 		nix_help () {
@@ -284,7 +406,7 @@ in
   ".bashrc" = {
 	text = ''
 	# Environment variables
-	export PATH="/shade/bin:$PATH"
+	export PATH="/home/shade/bin:$PATH"
 	export PS1="\n\[\033[1;38;2;176;0;176m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$ \[\033[0m\]"
 	export EDITOR="nvim"
 
@@ -433,7 +555,7 @@ in
   };
   ".config/kitty/kitty.conf"= {
 	text = ''
-	confirm_os_window_close 0 
+	confirm_os_window_close 0
 
 	# Base16 Primer Dark - kitty color config
 	# Scheme by Jimmy Lin
@@ -629,7 +751,7 @@ in
 			"on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
 			"tooltip": false
 		},
-		
+
 		"disk": {
 		"format": " {percentage_used}%",
 		"tooltip": true,
@@ -980,7 +1102,7 @@ in
 		name = "Graphite-Dark";
 		package = pkgs.graphite-gtk-theme;
 		};
-	}; 
+	};
 
 #####################################
 ########## USER SERVICES ############
@@ -1007,7 +1129,7 @@ in
 				};
 				Timer = {
 					OnCalendar = "weekly";
-					persistent = true;
+					Persistent = true;
 				};
 				Install = {
 					WantedBy = [ "timers.target" ];
@@ -1025,7 +1147,7 @@ in
 						#!/run/current-system/sw/bin/bash
 						/nix/store/yzymlkgcamps2jr5gbslcydcrwj4gw8n-openssh-9.7p1/bin/scp /home/shade/finance/*.txt pagedmov@192.168.1.206:/home/pagedmov/inbox/backup;
 						/nix/store/yzymlkgcamps2jr5gbslcydcrwj4gw8n-openssh-9.7p1/bin/ssh pagedmov@192.168.1.206 "echo \"Backup completed at $(date)\" > /home/pagedmov/inbox/backup/lastbackup.txt";
-					''}";	
+					''}";
 				};
 			};
 			update-packages = {
@@ -1059,4 +1181,3 @@ in
 		};
   };
 }
-

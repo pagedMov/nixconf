@@ -57,4 +57,16 @@ gdb
 qimgv
 bc
 socat
+hyprland-workspaces
+uhk-udev-rules
+uhk-agent
+qbittorrent
+mcomix
+libnotify
+dunst
+yt-dlp
+nlohmann_json
+brightnessctl
+python311Packages.pip
+xdotool
 ]
