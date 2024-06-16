@@ -73,4 +73,6 @@ neovim
 vimPlugins.lazy-nvim
 pyright
 lua-language-server
+lsof
+service-wrapper
 ]

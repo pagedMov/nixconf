@@ -17,6 +17,7 @@ let
 	flake8
 	discordpy
 	scipy
+	simple-websocket-server
   ]);
 in
 {
