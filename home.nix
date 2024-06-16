@@ -1094,6 +1094,12 @@ in
 	}
 	'';
   };
+  ".config/dunst/dunstrc" = {
+  	text = ''
+		[global]
+			monitor = 1
+	'';
+  }
   };
 
   gtk = {
