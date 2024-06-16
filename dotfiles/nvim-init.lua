@@ -160,12 +160,12 @@
 				}
 			end,
 		},
+		"stankovictab/mgz.nvim",
 		"mbbill/undotree",
 		"nvim-tree/nvim-web-devicons",
 		"hrsh7th/nvim-cmp",
 		"voldikss/vim-floaterm",
 		"tpope/vim-endwise",
-		"dgox16/oldworld.nvim",
 		"rktjmp/lush.nvim",
 		"justinmk/vim-sneak",
 		"junegunn/vim-slash",
@@ -187,7 +187,7 @@
 
 	vim.diagnostic.config({ signs = false })
 
-	vim.cmd.colorscheme("oldworld")
+	vim.cmd.colorscheme("mgz")
 
 -- KEYMAPS --------------------------------------------------
 
