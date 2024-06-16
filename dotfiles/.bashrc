@@ -2,6 +2,7 @@
 	export PATH="/home/shade/bin:$PATH"
 	export PS1="\n\[\033[1;38;2;176;0;176m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$ \[\033[0m\]"
 	export EDITOR="nvim"
+	export NVIM_CONFIG="/home/shade/.config/nvim/init.lua"
 
 	# Alias
 	source /home/shade/.nixalias

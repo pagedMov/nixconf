@@ -69,4 +69,8 @@ nlohmann_json
 brightnessctl
 python311Packages.pip
 xdotool
+neovim
+vimPlugins.lazy-nvim
+pyright
+lua-language-server
 ]
