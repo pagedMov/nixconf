@@ -13,6 +13,12 @@
 	end
 	vim.opt.rtp:prepend(lazypath)
 
+	local ok, api_key = pcall(require, 'ai_key')
+	if ok and api_key.OPENAI_API_KEY then
+		vim.env.OPENAI_API_KEY = api_key.OPENAI_API_KEY
+	else
+		vim.api.nvim_err_writeln("Failed to load OpenAI API key")
+	end
 	require("lazy").setup({
 		{
 			"m4xshen/autoclose.nvim",
@@ -151,9 +157,19 @@
 				}
 			end,
 		},
+		{
+			"Aaronik/GPTModels.nvim",
+			dependencies = {
+				"MunifTanjim/nui.nvim",
+				"nvim-telescope/telescope.nvim"
+			}
+		},
+		"mateuszwieloch/automkdir.nvim",
+		"doctorfree/cheatsheet.nvim",
 		"nvim-lualine/lualine.nvim",
 		"stankovictab/mgz.nvim",
 		"mbbill/undotree",
+		"tris203/precognition.nvim",
 		"nvim-tree/nvim-web-devicons",
 		"hrsh7th/nvim-cmp",
 		"voldikss/vim-floaterm",
@@ -240,7 +256,10 @@
 	vim.api.nvim_set_keymap('n', '<leader>rp', ":lua require('refactoring').debug.printf({below = false})<CR>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap('x', '<leader>rv', ":lua require('refactoring').debug.print_var()<CR>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap('n', '<leader>rv', ":lua require('refactoring').debug.print_var()<CR>", { noremap = true, silent = true })
-	vim.api.nvim_set_keymap('n', '<leader>rc', ":lua require('refactoring').debug.cleanup({})<CR>", { noremap = true, silent = true })
+	vim.api.nvim_set_keymap('v', '<leader>a', ':GPTModelsCode<CR>', { noremap = true })
+	vim.api.nvim_set_keymap('n', '<leader>a', ':GPTModelsCode<CR>', { noremap = true })
+	vim.api.nvim_set_keymap('v', '<leader>c', ':GPTModelsChat<CR>', { noremap = true })
+	vim.api.nvim_set_keymap('n', '<leader>c', ':GPTModelsChat<CR>', { noremap = true })vim.api.nvim_set_keymap('n', '<leader>rc', ":lua require('refactoring').debug.cleanup({})<CR>", { noremap = true, silent = true })
 
 	-- AUTOCMD --------------------------------------------------
 
