@@ -25,12 +25,13 @@
 			fi
 		}
 		nix_pip () {
-			if [ -z $1 ]; then echo "input a python package name"
+			if [ -z "$1" ]; then
+				echo "Input a Python package name"
 			elif grep -q "$1" /home/shade/.config/home-manager/pack/pypack.nix; then
-				echo "python package already installed"
+				echo "Python package already installed"
 			else
-				sed -i "/^])/i$1" "/home/shade/.config/home-manager/pack/pypack.nix"
-				echo "added $1 to pypack.nix, rebuild? (y/n)"
+				sed -i "/^  ]);/i\    $1" "/home/shade/.config/home-manager/pack/pypack.nix"
+				echo "Added $1 to pypack.nix, rebuild? (y/n)"
 				rebuildprompt
 			fi
 		}
