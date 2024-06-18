@@ -168,7 +168,7 @@
 		"mateuszwieloch/automkdir.nvim",
 		"doctorfree/cheatsheet.nvim",
 		"nvim-lualine/lualine.nvim",
-		"stankovictab/mgz.nvim",
+		"miikanissi/modus-themes.nvim",
 		"mbbill/undotree",
 		"tris203/precognition.nvim",
 		"nvim-tree/nvim-web-devicons",
@@ -222,6 +222,16 @@
 		extensions = {}
 	}
 
+	require("modus-themes").setup({
+		style = "auto",
+		styles = {
+			comments = { italic = true },
+			keywords = { italic = true },
+			functions = { bold = true },
+			variables = {},
+		}
+	})
+
 -- OPTIONS --------------------------------------------------
 
 	vim.opt.number = true
@@ -237,7 +247,8 @@
 
 	vim.diagnostic.config({ signs = false })
 
-	vim.cmd.colorscheme("mgz")
+	vim.o.background = "dark"
+	vim.cmd.colorscheme("modus")
 
 -- KEYMAPS --------------------------------------------------
 
