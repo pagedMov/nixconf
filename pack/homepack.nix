@@ -75,4 +75,5 @@ pyright
 lua-language-server
 lsof
 service-wrapper
+clang-tools
 ]

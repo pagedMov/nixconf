@@ -18,6 +18,8 @@ let
 	discordpy
 	scipy
 	simple-websocket-server
+    pynotifier
+    python-daemon
   ]);
 in
 {
