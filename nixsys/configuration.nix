@@ -4,7 +4,7 @@
 { config, lib, pkgs, ... }:
 let
   sysPkgs = import /etc/nixos/modules/syspack.nix { inherit pkgs; };
-  configGeneration = "172";
+  configGeneration = "173";
 in
 {
   imports =

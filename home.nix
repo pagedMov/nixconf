@@ -92,7 +92,7 @@ in
 				};
 				Service = {
 					Type = "oneshot";
-					ExecStart = "/home/shade/home-manager/scripts/updatecheck.sh";
+					ExecStart = "/home/shade/.config/home-manager/scripts/updatecheck.sh";
 				};
 			};
 			backup-files = {
