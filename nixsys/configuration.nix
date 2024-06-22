@@ -4,7 +4,7 @@
 { config, lib, pkgs, ... }:
 let
   sysPkgs = import /etc/nixos/modules/syspack.nix { inherit pkgs; };
-  configGeneration = "170";
+  configGeneration = "";
 in
 {
   imports =
@@ -177,9 +177,20 @@ in
 	mount_windows={
 		description = "Mount Win10 VM";
 		wantedBy = [ "multi-user.target" ];
-		serviceConfig.Type = "oneshot";
-		serviceConfig.ExecStart = "/etc/nixos/scripts/mountwin11.sh";
+		serviceConfig = {
+			Type = "oneshot";
+			ExecStart = "/etc/nixos/scripts/mountwin11.sh";
+		};
   	};
+	update_config={
+		description = "Check Nix Config Repo";
+		after = [ "network.target" "multi-user.target" ];
+		wantedBy = [ "multi-user.target" ];
+		serviceConfig = {
+			Type = "oneshot";
+			ExecStart = "/etc/nixos/scripts/updatecheck.sh";
+		};
+	};
   };
 
 
