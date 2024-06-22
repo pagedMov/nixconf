@@ -65,6 +65,9 @@ nix_rebuild () {
 	cd /home/shade/.config/home-manager/ && \
 	find . -type f -name "*.swp" -exec sudo rm -r {} + && \
 	find . -type f -name "*.swo" -exec sudo rm -r {} + && \
+	if [ "$2" == "--nopush" ];
+		return 0
+	fi
 	git add . && \
 	git commit -m "$message" && \
 	git push && \
