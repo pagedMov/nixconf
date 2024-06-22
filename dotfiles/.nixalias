@@ -2,6 +2,7 @@
 
 
 nix_search () {
+	# instead of the builtin nixpkgs search, run through a cached list of packages
 	echo "$(cat ~/bin/packages.list)" | grep "$1" | awk '{print $1}'
 }
 nix_install () {
@@ -36,13 +37,36 @@ nix_pip () {
 	fi
 }
 nix_find_path () {
+	# easier way to find stuff
 	sudo find / -name "$1"
 }
 nix_remove () {
+	# take a package name as an arg
+	# remove package from package list
+	# ask to rebuild
 	sed -i "/$1/d" /home/shade/.config/home-manager/pack/homepack.nix
 	echo "$1 removed from homepack.nix"
 	echo "rebuild? (y/n)"
 	rebuildprompt
+}
+nix_rebuild () {
+	# take a commit message as an arg
+	# rebuild the nixos system, then push changes to github
+	if [ "$#" -eq 0 ]; then
+		echo "Please provide a commit message"
+		return 1
+	fi
+	message="$1"
+	sudo nixos-rebuild switch && \
+	sudo rsync -avh --delete /etc/nixos/ /home/shade/.config/home-manager/nixsys && \
+	prevdir="$PWD" && \
+	cd /home/shade/.config/home-manager/ && \
+	find . -type f -name "*.swp" -exec sudo rm -r {} + && \
+	find . -type f -name "*.swo" -exec sudo rm -r {} + && \
+	git add . && \
+	git commit -m "$message" && \
+	git push && \
+	cd "$prevdir"
 }
 rebuildprompt () {
 	undecided=true; while $undecided; do read yn
@@ -91,18 +115,6 @@ nix_help () {
 		&& echo "nixremove <pkg> - remove a package" \
 		&& echo "nixhelp - show this message"
 	}
-	nix_rebuild () {
-		sudo nixos-rebuild switch && \
-		sudo rsync -avh /etc/nixos/ /home/shade/.config/home-manager/nixsys && \
-		prevdir="$PWD" && \
-		cd /home/shade/.config/home-manager/ && \
-		find . -type f -name "*.swp" -exec sudo rm -r {} + && \
-		find . -type f -name "*.swo" -exec sudo rm -r {} + && \
-		git add . && \
-		git commit -m "updated nix system config" && \
-		git push && \
-		cd "$prevdir"
-	}
 
 		alias nixconf="sudo nvim /etc/nixos/configuration.nix"
 
@@ -131,3 +143,5 @@ nix_help () {
 		alias nixhelp=nix_help
 
 		alias rebuildall="shaderebuild && nixrebuild"
+		
+		alias updatenixlist="nix-env -qaP > ~/bin/packages.list"

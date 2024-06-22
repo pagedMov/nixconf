@@ -6,6 +6,7 @@
 	export BASHRC="/home/shade/.config/home-manager/dotfiles/.bashrc"
 	export HYPRCONF="/home/shade/.config/home-manager/dotfiles/hyprland.conf"
 	export HM_DIR="/home/shade/.config/home-manager"
+	export NIX_DIR="/etc/nixos"
 	export DOTFILES="/home/shade/.config/home-manager/dotfiles"
 	export SYSD_DIR="/home/shade/.config/systemd/user"
 	export LOCAL_IP="$(ip -4 addr show $(ip route show default | awk '/default/ {print $5}') | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
