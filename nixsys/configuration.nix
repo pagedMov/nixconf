@@ -2,7 +2,10 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 { config, lib, pkgs, ... }:
-
+let
+  sysPkgs = import /etc/nixos/modules/syspack.nix { inherit pkgs; };
+  configGeneration = "166";
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -145,61 +148,7 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-   environment.systemPackages = with pkgs; [
-	wget
-	vim
-	kanata
-	mkinitcpio-nfs-utils
-	gtk3
-	gawk
-	kitty
-	polkit-kde-agent
-	polkit
-	inetutils
-	less
-	more
-	unionfs-fuse
-	rsync
-	rsnapshot
-	snapper
-	git
-	docker
-	alsa-utils
-	neofetch
-	findutils
-	coreutils
-	xorg.xhost
-	sudo
-	curl
-	git
-	bash
-	bat
-	eza
-	jq
-	curl
-	unzip
-	zip
-	file
-	gcc
-	htop
-	tmux
-	tree
-	grc
-	gnupg
-	ffmpeg
-	openssh
-	nmap
-	iotop
-	libvirt
-	qemu_full
-	virtio-win
-	bridge-utils
-	qt6ct
-	dbus
-	usbutils
-	home-manager
-	xdg-desktop-portal-hyprland
-   ];
+   environment.systemPackages = with pkgs; sysPkgs;
 
 
 

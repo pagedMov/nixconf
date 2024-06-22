@@ -1,0 +1,58 @@
+{ pkgs, ... }:
+
+with pkgs; [
+	wget
+	vim
+	kanata
+	mkinitcpio-nfs-utils
+	gtk3
+	gawk
+	kitty
+	polkit-kde-agent
+	polkit
+	inetutils
+	less
+	more
+	unionfs-fuse
+	rsync
+	rsnapshot
+	snapper
+	git
+	docker
+	alsa-utils
+	neofetch
+	findutils
+	coreutils
+	xorg.xhost
+	sudo
+	curl
+	git
+	bash
+	bat
+	eza
+	jq
+	curl
+	unzip
+	zip
+	file
+	gcc
+	htop
+	tmux
+	tree
+	grc
+	gnupg
+	ffmpeg
+	openssh
+	nmap
+	iotop
+	libvirt
+	qemu_full
+	virtio-win
+	bridge-utils
+	qt6ct
+	dbus
+	usbutils
+	home-manager
+	xdg-desktop-portal-hyprland
+]
+

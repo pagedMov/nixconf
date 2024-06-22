@@ -22,7 +22,7 @@ in
   home.stateVersion = "24.11";
 
   fonts.fontconfig.enable = true;
-  home.packages = with pkgs ; [ pypack.pythonWithPackages ] ++ fontPackages ++ homePkgs;
+  home.packages = with pkgs; [ pypack.pythonWithPackages ] ++ fontPackages ++ homePkgs;
   nixpkgs.config.allowUnfree = true;
   home.sessionVariables = {
   	NVIM_CONFIG = "/home/shade/.config/nvim/init.lua";

@@ -58,6 +58,8 @@ nix_rebuild () {
 	fi
 	message="$1"
 	sudo nixos-rebuild switch && \
+	generation=$(sudo nix-env -p /nix/var/nix/profiles/system --list-generations | grep "(current)" | awk '{print $1}') && \
+	sudo sed -i "s/^  configGeneration = \".*\";/  configGeneration = \"$generation\";/" "/etc/nixos/configuration.nix" && \
 	sudo rsync -avh --delete /etc/nixos/ /home/shade/.config/home-manager/nixsys && \
 	prevdir="$PWD" && \
 	cd /home/shade/.config/home-manager/ && \
@@ -116,7 +118,7 @@ nix_help () {
 		&& echo "nixhelp - show this message"
 	}
 
-		alias nixconf="sudo nvim /etc/nixos/configuration.nix"
+		alias nixconf="sudo -E neovide /etc/nixos/configuration.nix"
 
 		alias shadeconf="home-manager edit"
 
