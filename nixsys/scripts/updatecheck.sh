@@ -1,4 +1,4 @@
-#!/run/run/current-system/sw/bin/bash
+#!/run/current-system/sw/bin/bash
 
 prevdir="$PWD"
 cd /home/shade/.config/home-manager
