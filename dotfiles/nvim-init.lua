@@ -243,6 +243,30 @@
 		command = 'set undofile',
 	})
 
+	local scrollbar_augroup = vim.api.nvim_create_augroup("ScrollbarCMDs", { clear = true })
+	vim.api.nvim_create_autocmd({
+		"WinScrolled",
+		"VimResized",
+		"QuitPre",
+		"WinEnter",
+		"FocusGained",
+	}, {
+		pattern = '*',
+		command = 'lua require("scrollbar").show()',
+		group = "ScrollbarCMDs",
+	})
+
+	vim.api.nvim_create_autocmd({
+		"WinLeave",
+		"BufLeave",
+		"BufWinLeave",
+		"FocusLost",
+	}, {
+		pattern = '*',
+		command = 'lua require("scrollbar").clear()',
+		group = "ScrollbarCMDs",
+	})
+
 -- CUSTOMS --------------------------------------------------
 
 	--add some custom commands here later maybe?
