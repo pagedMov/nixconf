@@ -216,19 +216,14 @@
 	vim.api.nvim_set_keymap('x', '<leader>rv', ":lua require('refactoring').debug.print_var()<CR>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap('n', '<leader>rv', ":lua require('refactoring').debug.print_var()<CR>", { noremap = true, silent = true })
 
-	-- AUTOCMD --------------------------------------------------
-
-	vim.api.nvim_create_autocmd('VimEnter', {
-		pattern = '*',
-		command = "set statusline=%{get(b:,'gitsigns_status','')}\\ %f\\ %h%m%r%=%-14.(%l,%c%V%)\\ %P",
-	})
+-- AUTOCMD --------------------------------------------------
 
 	vim.api.nvim_create_autocmd('VimEnter', {
 		pattern = '*',
 		command = 'wincmd p',
 	})
 
-	vim.api.nvim_create_autocmd('VimEnter', {
+	vim.api.nvim_create_autocmd('VimEnter', { -- terminal window
 		pattern = '*',
 		command = 'FloatermNew --wintype=float --name=shadeterm --position=topright --autoclose=0 --silent --cwd=<buffer> --titleposition=left',
 	})
@@ -267,7 +262,3 @@
 		command = 'lua require("scrollbar").clear()',
 		group = "ScrollbarCMDs",
 	})
-
--- CUSTOMS --------------------------------------------------
-
-	--add some custom commands here later maybe?
