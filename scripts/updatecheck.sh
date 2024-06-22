@@ -4,16 +4,13 @@ prevdir="$PWD"
 cd /home/shade/.config/home-manager
 
 git fetch origin
+updatefile=$(cat .update)
 
-LOCAL=$(git rev-parse @)
-REMOTE=$(git rev-parse @{u})
-
-if [ "$LOCAL" != "$REMOTE" ]; then
+if [ "$updatefile" == "1" ]; then
 	echo "Update found"
 	echo "Synchronizing configuration with repository..."
 	git pull
-	rsync "/home/shade/.config/home-manager/nixsys/" "/etc/nixos/"
-	nix-rebuild switch
-	echo "1" > .update
+	home-manager switch
+	echo "0" > .update
 fi
 cd "$prevdir"
