@@ -14,39 +14,9 @@
 	vim.opt.rtp:prepend(lazypath)
 
 	require("lazy").setup({
-		{
-			"m4xshen/autoclose.nvim",
-			config = function()
-				require("autoclose").setup({
-					options = {
-						disable_when_touch = true,
-						auto_indent = true,
-						disable_command_mode = true,
-					},
-				})
-			end,
-		},
-		{
-			"nvim-treesitter/nvim-treesitter",
-			run = ":TSUpdate",  -- Ensure Treesitter is updated
-			config = function()
-				require('nvim-treesitter.configs').setup {
-					highlight = {
-						enable = true,
-					},
-				}
-			end,
-		},
-		{
-			"IogaMaster/neocord",
-			event = "VeryLazy",
-			config = function()
-				require("neocord").setup()
-			end,
-		},
-		{
-			"neovim/nvim-lspconfig", -- REQUIRED: for native Neovim LSP integration
-			lazy = false, -- REQUIRED: tell lazy.nvim to start this plugin at startup
+		{ -- LSP configuration
+			"neovim/nvim-lspconfig",
+			lazy = false,
 			dependencies = {
 				-- main one
 				{ "ms-jpq/coq_nvim", branch = "coq" },
@@ -58,7 +28,7 @@
 			},
 			init = function()
 				vim.g.coq_settings = {
-					auto_start = true, -- if you want to start COQ at startup
+					auto_start = true,
 				}
 			end,
 			config = function()
@@ -94,32 +64,64 @@
 				}
 			end,
 		},
-		-- quality of life --
-		"cappyzawa/trim.nvim",
-		"rktjmp/lush.nvim",
-		"mbbill/undotree",
+		-- color schemes --
 		"miikanissi/modus-themes.nvim",
-		"mateuszwieloch/automkdir.nvim",
-		"kylechui/nvim-surround",
-		"lukas-reineke/indent-blankline.nvim",
-		"lewis6991/gitsigns.nvim",
-		"karb94/neoscroll.nvim",
-		"tpope/vim-endwise",
-		"tris203/precognition.nvim",
-		"nvim-lualine/lualine.nvim",
-		"doctorfree/cheatsheet.nvim",
-		"chentoast/marks.nvim",
+
+		-- quality of life --
+		'MunifTanjim/nui.nvim', -- Dependency for competitest
+		"m4xshen/autoclose.nvim", -- Automatically close brackets and quotes
+		"nvim-treesitter/nvim-treesitter", -- Syntax highlighting
+		"cappyzawa/trim.nvim", -- Remove trailing whitespace on file write
+		"rktjmp/lush.nvim", -- Tool for creating color schemes
+		"mbbill/undotree", -- Visualize vim undo tree
+		"mateuszwieloch/automkdir.nvim", -- Automatically create missing parent directories when writing file
+		"kylechui/nvim-surround", -- Create a close character when you type an open character
+		"lukas-reineke/indent-blankline.nvim", -- Automatically indent new lines
+		"lewis6991/gitsigns.nvim", -- Show changes compared to repository
+		"tpope/vim-endwise", -- Automatically generate close statements
+		"tris203/precognition.nvim", -- Render key combinations for vim motions in buffer
+		"nvim-lualine/lualine.nvim", -- Customizable status bar
+		"doctorfree/cheatsheet.nvim", -- A cheatsheet for common commands
+		"chentoast/marks.nvim", -- Show marks in the vert bar
+		"Xuyuanp/scrollbar.nvim", -- A scrollbar
+		"ethanholz/nvim-lastplace", -- Re-open files at last edit position
 		-- extra functionality --
-		"xeluxee/competitest.nvim",
-		"folke/trouble.nvim",
-		"nvim-tree/nvim-web-devicons",
-		"hrsh7th/nvim-cmp",
-		"voldikss/vim-floaterm",
-		"justinmk/vim-sneak",
-		"junegunn/vim-slash",
-		"tpope/vim-fugitive",
+		'xeluxee/competitest.nvim', -- UI for competitive programming
+		"IogaMaster/neocord", -- Discord rich presence integration
+		"folke/trouble.nvim", -- Window for LSP errors/warnings
+		"nvim-tree/nvim-web-devicons", -- Icons for LSP server
+		"hrsh7th/nvim-cmp", -- Autocompletion
+		"voldikss/vim-floaterm", -- Floating terminal windows
+		"justinmk/vim-sneak", -- New motion lets you search for two-character patterns
+		"junegunn/vim-slash", -- Better search functionality
+		"tpope/vim-fugitive", -- Better git integration
 	})
 
+	-- plugin setup --
+
+	require('marks').setup()
+	require('gitsigns').setup()
+	require('nvim-surround').setup()
+	require('nvim-lastplace').setup()
+	require('trouble').setup()
+	require('competitest').setup()
+	require('nvim-web-devicons').setup()
+	require('cmp').setup()
+	require('ibl').setup()
+	require("neocord").setup()
+
+	require("autoclose").setup({
+		options = {
+			disable_when_touch = true,
+			auto_indent = true,
+			disable_command_mode = true,
+		},
+	})
+	require('nvim-treesitter.configs').setup {
+		highlight = {
+			enable = true,
+		},
+	}
 	require('lualine').setup {
 		options = {
 			icons_enabled = true,
@@ -173,6 +175,11 @@
 
 -- OPTIONS --------------------------------------------------
 
+	if vim.g.neovide then
+		vim.g.neovide_refresh_rate = 144
+		vim.g.neovide_cursor_vfx_mode = "sonicboom"
+	end
+
 	vim.opt.number = true
 	vim.opt.relativenumber = true
 	vim.opt.hlsearch = true
@@ -181,6 +188,7 @@
 	vim.opt.tabstop = 4
 	vim.opt.termguicolors = true
 	vim.opt.ruler = true
+	vim.opt.scrolloff = 6
 
 	vim.g.mapleader = "\\"
 
@@ -207,22 +215,8 @@
 	vim.api.nvim_set_keymap('n', '<leader>rp', ":lua require('refactoring').debug.printf({below = false})<CR>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap('x', '<leader>rv', ":lua require('refactoring').debug.print_var()<CR>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap('n', '<leader>rv', ":lua require('refactoring').debug.print_var()<CR>", { noremap = true, silent = true })
-	vim.api.nvim_set_keymap('v', '<leader>a', ':GPTModelsCode<CR>', { noremap = true })
-	vim.api.nvim_set_keymap('n', '<leader>a', ':GPTModelsCode<CR>', { noremap = true })
-	vim.api.nvim_set_keymap('v', '<leader>c', ':GPTModelsChat<CR>', { noremap = true })
-	vim.api.nvim_set_keymap('n', '<leader>c', ':GPTModelsChat<CR>', { noremap = true })vim.api.nvim_set_keymap('n', '<leader>rc', ":lua require('refactoring').debug.cleanup({})<CR>", { noremap = true, silent = true })
 
 	-- AUTOCMD --------------------------------------------------
-
-	vim.api.nvim_create_autocmd('InsertEnter', {
-		pattern = '*',
-		command = 'setlocal nocursorline nocursorcolumn',
-	})
-
-	vim.api.nvim_create_autocmd({'VimEnter', 'InsertLeave'}, {
-		pattern = '*',
-		command = 'setlocal cursorline cursorcolumn',
-	})
 
 	vim.api.nvim_create_autocmd('VimEnter', {
 		pattern = '*',
