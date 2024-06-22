@@ -66,6 +66,7 @@
 		},
 		-- color schemes --
 		"miikanissi/modus-themes.nvim",
+		"EdenEast/nightfox.nvim",
 
 		-- quality of life --
 		'MunifTanjim/nui.nvim', -- Dependency for competitest
@@ -178,6 +179,7 @@
 	if vim.g.neovide then
 		vim.g.neovide_refresh_rate = 144
 		vim.g.neovide_cursor_vfx_mode = "sonicboom"
+		vim.g.neovide_cursor_animate_in_insert_mode = false
 	end
 
 	vim.opt.number = true
@@ -195,7 +197,8 @@
 	vim.diagnostic.config({ signs = false })
 
 	vim.o.background = "dark"
-	vim.cmd.colorscheme("modus")
+	-- vim.cmd.colorscheme("modus")
+	vim.cmd.colorscheme("carbonfox")
 
 -- KEYMAPS --------------------------------------------------
 

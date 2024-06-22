@@ -42,6 +42,7 @@ in
   ".config/waybar/style.css".source = 		dotfiles/waybarstyle.css;
   ".config/dunst/dunstrc".source = 			dotfiles/dunstrc;
   ".config/nvim/init.lua".source =			dotfiles/nvim-init.lua;
+  ".config/neovide/init.lua".source =			dotfiles/nvim-init.lua;
   };
 
   gtk = {
