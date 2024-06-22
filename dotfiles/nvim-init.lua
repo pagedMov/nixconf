@@ -243,7 +243,8 @@
 		command = 'set undofile',
 	})
 
-	local scrollbar_augroup = vim.api.nvim_create_augroup("ScrollbarCMDs", { clear = true })
+	-- scrollbar
+	vim.api.nvim_create_augroup("ScrollbarCMDs", { clear = true })
 	vim.api.nvim_create_autocmd({
 		"WinScrolled",
 		"VimResized",
