@@ -13,12 +13,6 @@
 	end
 	vim.opt.rtp:prepend(lazypath)
 
-	local ok, api_key = pcall(require, 'ai_key')
-	if ok and api_key.OPENAI_API_KEY then
-		vim.env.OPENAI_API_KEY = api_key.OPENAI_API_KEY
-	else
-		vim.api.nvim_err_writeln("Failed to load OpenAI API key")
-	end
 	require("lazy").setup({
 		{
 			"m4xshen/autoclose.nvim",
@@ -33,40 +27,6 @@
 			end,
 		},
 		{
-			"xeluxee/competitest.nvim",
-			dependencies = { 'MunifTanjim/nui.nvim' },
-			config = function()
-				require("competitest").setup({
-					runner_ui = {
-						interface = "split",
-					}
-				})
-			end,
-		},
-		{
-			"karb94/neoscroll.nvim",
-			config = function()
-				require("neoscroll").setup({
-					hide_cursor = false,
-				})
-			end,
-		},
-		{
-			"folke/trouble.nvim",
-			config = function()
-				require("trouble").setup({
-					indent_guides = true,
-				})
-			end,
-		},
-		{
-			"lewis6991/gitsigns.nvim",
-			dependencies = { 'nvim-lua/plenary.nvim' }, -- Ensure this dependency is loaded
-			config = function()
-				require("gitsigns").setup()
-			end,
-		},
-		{
 			"nvim-treesitter/nvim-treesitter",
 			run = ":TSUpdate",  -- Ensure Treesitter is updated
 			config = function()
@@ -78,34 +38,10 @@
 			end,
 		},
 		{
-			"kylechui/nvim-surround",
-			config = function()
-				require("nvim-surround").setup()
-			end,
-		},
-		{
-			"cappyzawa/trim.nvim",
-			config = function()
-				require("trim").setup()
-			end,
-		},
-		{
 			"IogaMaster/neocord",
 			event = "VeryLazy",
 			config = function()
 				require("neocord").setup()
-			end,
-		},
-		{
-			"chentoast/marks.nvim",
-			config = function()
-				require("marks").setup()
-			end,
-		},
-		{
-			"lukas-reineke/indent-blankline.nvim",
-			config = function()
-				require("ibl").setup()
 			end,
 		},
 		{
@@ -158,24 +94,27 @@
 				}
 			end,
 		},
-		{
-			"Aaronik/GPTModels.nvim",
-			dependencies = {
-				"MunifTanjim/nui.nvim",
-				"nvim-telescope/telescope.nvim"
-			}
-		},
-		"mateuszwieloch/automkdir.nvim",
-		"doctorfree/cheatsheet.nvim",
-		"nvim-lualine/lualine.nvim",
-		"miikanissi/modus-themes.nvim",
+		-- quality of life --
+		"cappyzawa/trim.nvim",
+		"rktjmp/lush.nvim",
 		"mbbill/undotree",
+		"miikanissi/modus-themes.nvim",
+		"mateuszwieloch/automkdir.nvim",
+		"kylechui/nvim-surround",
+		"lukas-reineke/indent-blankline.nvim",
+		"lewis6991/gitsigns.nvim",
+		"karb94/neoscroll.nvim",
+		"tpope/vim-endwise",
 		"tris203/precognition.nvim",
+		"nvim-lualine/lualine.nvim",
+		"doctorfree/cheatsheet.nvim",
+		"chentoast/marks.nvim",
+		-- extra functionality --
+		"xeluxee/competitest.nvim",
+		"folke/trouble.nvim",
 		"nvim-tree/nvim-web-devicons",
 		"hrsh7th/nvim-cmp",
 		"voldikss/vim-floaterm",
-		"tpope/vim-endwise",
-		"rktjmp/lush.nvim",
 		"justinmk/vim-sneak",
 		"junegunn/vim-slash",
 		"tpope/vim-fugitive",

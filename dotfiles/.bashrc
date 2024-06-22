@@ -8,6 +8,22 @@
 	export HM_DIR="/home/shade/.config/home-manager"
 	export DOTFILES="/home/shade/.config/home-manager/dotfiles"
 	export SYSD_DIR="/home/shade/.config/systemd/user"
+	export LOCAL_IP="$(ip -4 addr show $(ip route show default | awk '/default/ {print $5}') | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
+
+# Functions
+	send_to_server() {
+		if [ $# -eq 0 ]; then
+			echo "Usage: send_to_server <file_path>"
+			return 1
+		fi
+
+		local file_path=$1
+		local server_user="pagedmov"
+		local server_address="192.168.1.206"
+		local destination_path="/home/pagedmov/inbox"
+
+		scp "$file_path" "${server_user}@${server_address}:${destination_path}"
+	}
 
 # Alias
 	source /home/shade/.nixalias
@@ -15,3 +31,4 @@
 	alias win10off="sudo virsh shutdown win10 && sudo virsh detach-device win10 /home/shade/vmStorage/devices/headset.xml"
 	alias nvimtest="nvim -u $HM_DIR/dotfiles/nvim-init.lua $HM_DIR/dotfiles/nvim-init.lua"
 	alias savescreen="grimblast save area ~/Pictures/screens/\"$(date).png\""
+	alias serversend=send_to_server

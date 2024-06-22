@@ -20,6 +20,7 @@ let
 	simple-websocket-server
     pynotifier
     python-daemon
+    flask
   ]);
 in
 {
