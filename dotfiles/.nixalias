@@ -58,14 +58,16 @@ nix_rebuild () {
 	fi
 	message="$1"
 	sudo nixos-rebuild switch && \
-	generation=$(sudo nix-env -p /nix/var/nix/profiles/system --list-generations | grep "(current)" | awk '{print $1}') && \
+	generation="$(sudo nix-env -p /nix/var/nix/profiles/system --list-generations | grep "(current)" | awk '{print $1}')" && \
+	echo "Created config generation $generation"
 	sudo sed -i "s/^  configGeneration = \".*\";/  configGeneration = \"$generation\";/" "/etc/nixos/configuration.nix" && \
 	sudo rsync -avh --delete /etc/nixos/ /home/shade/.config/home-manager/nixsys && \
 	prevdir="$PWD" && \
 	cd /home/shade/.config/home-manager/ && \
 	find . -type f -name "*.swp" -exec sudo rm -r {} + && \
 	find . -type f -name "*.swo" -exec sudo rm -r {} + && \
-	if [ "$2" == "--nopush" ];
+	if [ "$2" == "--nopush" ]; then
+		cd "$prevdir"
 		return 0
 	fi
 	git add . && \
