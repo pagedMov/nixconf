@@ -32,4 +32,4 @@
 	alias nvimtest="nvim $HM_DIR/dotfiles/nvim-init.lua -- -u $HM_DIR/dotfiles/nvim-init.lua"
 	alias savescreen="grimblast save area ~/Pictures/screens/\"$(date).png\""
 	alias serversend=send_to_server
-	source /home/shade/.nixalias
+	source /home/shade/.config/home-manager/dotfiles/.nixalias

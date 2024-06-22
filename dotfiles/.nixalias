@@ -1,96 +1,108 @@
-		#!/run/current-system/sw/bin/bash
+#!/run/current-system/sw/bin/bash
 
 
-		nix_search () {
-			echo "$(cat ~/bin/packages.list)" | grep "$1" | awk '{print $1}'
-		}
-		nix_install () {
-			if [ -z $1 ]; then echo "input a package name"
-			elif sudo grep -q "$1" /home/shade/.config/home-manager/pack/homepack.nix; then
-			  echo "package already installed"
-			else
-			  sed -i "/^\]/i$1" "/home/shade/.config/home-manager/pack/homepack.nix"
-			  echo "added $1 to pack.txt, rebuild? (y/n)"
-			  rebuildprompt
-			fi
-		}
-		nix_install_font () {
-			if [ -z $1 ]; then echo "input a package name"
-			elif sudo grep -q "$1" /home/shade/.config/home-manager/pack/fontpack.nix; then
-			  echo "package already installed"
-			else
-			  sed -i "/^\]/i$1" "/home/shade/.config/home-manager/pack/fontpack.nix"
-			  echo "added $1 to fontpack.txt, rebuild? (y/n)"
-			  rebuildprompt
-			fi
-		}
-		nix_pip () {
-			if [ -z "$1" ]; then
-				echo "Input a Python package name"
-			elif grep -q "$1" /home/shade/.config/home-manager/pack/pypack.nix; then
-				echo "Python package already installed"
-			else
-				sed -i "/^  ]);/i\    $1" "/home/shade/.config/home-manager/pack/pypack.nix"
-				echo "Added $1 to pypack.nix, rebuild? (y/n)"
-				rebuildprompt
-			fi
-		}
-		nix_find_path () {
-			sudo find / -name "$1"
-		 }
-		nix_remove () {
-			sed -i "/$1/d" /home/shade/.config/home-manager/pack/homepack.nix
-			echo "$1 removed from homepack.nix"
-			echo "rebuild? (y/n)"
-			rebuildprompt
-		}
-		rebuildprompt () {
-			undecided=true; while $undecided; do read yn
-				if [ $yn == "y" ]; then
-					echo "rebuilding..."
-					sleep 1
-					home-manager switch
-					undecided=false
-					 echo " "
-					echo "rebuild complete."
-				elif [ $yn == "n" ]; then
-					echo "exiting without rebuilding."
-					return 1
-				else
-					echo "input y or n"
-				fi
-			done
-		}
-		nix_installed () {
-			if [ -n "$1" ] && [ $1 == "open" ]; then
-				nvim /home/shade/.config/home-manager/pack/homepack.nix
-				return 0
-			elif [ -n "$1" ] && [ $1 != "open" ]; then
-				echo "invalid option"
-				return 1
-			else
-				cat /home/shade/.config/home-manager/pack/homepack.nix
-			fi
-		}
-		nix_help () {
-			echo
-			echo "--- config commands ---" \
-			&& echo "nixconf - edit system config" \
-			&& echo "nixhardconf - edit hardware config" \
-			&& echo "shadeconf - edit home-manager config" \
-			&& echo "nixfind - find path to command" \
-			&& echo "nixrebuild - rebuild nixos system" \
-			&& echo "shaderebuild - rebuild home-manager config" \
-			&& echo \
-			&& echo "--- package commands ---" \
-			&& echo "nixsearch <pkg> - search for a package" \
-			&& echo "nixinstalled <?open> - list installed packages, or open pack.nix with \"open\" arg" \
-			&& echo "nixinstall <pkg> - install a package" \
-			&& echo "nixinstallfont <pkg> - install a font" \
-			&& echo "nixpip <pkgs> - install a python lib" \
-			&& echo "nixremove <pkg> - remove a package" \
-			&& echo "nixhelp - show this message"
-		}
+nix_search () {
+	echo "$(cat ~/bin/packages.list)" | grep "$1" | awk '{print $1}'
+}
+nix_install () {
+	if [ -z $1 ]; then echo "input a package name"
+	elif sudo grep -q "$1" /home/shade/.config/home-manager/pack/homepack.nix; then
+		echo "package already installed"
+	else
+		sed -i "/^\]/i$1" "/home/shade/.config/home-manager/pack/homepack.nix"
+		echo "added $1 to pack.txt, rebuild? (y/n)"
+		rebuildprompt
+	fi
+}
+nix_install_font () {
+	if [ -z $1 ]; then echo "input a package name"
+	elif sudo grep -q "$1" /home/shade/.config/home-manager/pack/fontpack.nix; then
+		echo "package already installed"
+	else
+		sed -i "/^\]/i$1" "/home/shade/.config/home-manager/pack/fontpack.nix"
+		echo "added $1 to fontpack.txt, rebuild? (y/n)"
+		rebuildprompt
+	fi
+}
+nix_pip () {
+	if [ -z "$1" ]; then
+		echo "Input a Python package name"
+	elif grep -q "$1" /home/shade/.config/home-manager/pack/pypack.nix; then
+		echo "Python package already installed"
+	else
+		sed -i "/^  ]);/i\    $1" "/home/shade/.config/home-manager/pack/pypack.nix"
+		echo "Added $1 to pypack.nix, rebuild? (y/n)"
+		rebuildprompt
+	fi
+}
+nix_find_path () {
+	sudo find / -name "$1"
+}
+nix_remove () {
+	sed -i "/$1/d" /home/shade/.config/home-manager/pack/homepack.nix
+	echo "$1 removed from homepack.nix"
+	echo "rebuild? (y/n)"
+	rebuildprompt
+}
+rebuildprompt () {
+	undecided=true; while $undecided; do read yn
+	if [ $yn == "y" ]; then
+		echo "rebuilding..."
+		sleep 1
+		home-manager switch
+		undecided=false
+		echo " "
+		echo "rebuild complete."
+	elif [ $yn == "n" ]; then
+		echo "exiting without rebuilding."
+		return 1
+	else
+		echo "input y or n"
+	fi
+done
+}
+nix_installed () {
+	if [ -n "$1" ] && [ $1 == "open" ]; then
+		nvim /home/shade/.config/home-manager/pack/homepack.nix
+		return 0
+	elif [ -n "$1" ] && [ $1 != "open" ]; then
+		echo "invalid option"
+		return 1
+	else
+		cat /home/shade/.config/home-manager/pack/homepack.nix
+	fi
+}
+nix_help () {
+	echo
+	echo "--- config commands ---" \
+		&& echo "nixconf - edit system config" \
+		&& echo "nixhardconf - edit hardware config" \
+		&& echo "shadeconf - edit home-manager config" \
+		&& echo "nixfind - find path to command" \
+		&& echo "nixrebuild - rebuild nixos system" \
+		&& echo "shaderebuild - rebuild home-manager config" \
+		&& echo \
+		&& echo "--- package commands ---" \
+		&& echo "nixsearch <pkg> - search for a package" \
+		&& echo "nixinstalled <?open> - list installed packages, or open pack.nix with \"open\" arg" \
+		&& echo "nixinstall <pkg> - install a package" \
+		&& echo "nixinstallfont <pkg> - install a font" \
+		&& echo "nixpip <pkgs> - install a python lib" \
+		&& echo "nixremove <pkg> - remove a package" \
+		&& echo "nixhelp - show this message"
+	}
+	nix_rebuild () {
+		sudo nixos-rebuild switch && \
+		sudo rsync -avh /etc/nixos/ /home/shade/.config/home-manager/nixsys && \
+		prevdir="$PWD" && \
+		cd /home/shade/.config/home-manager/ && \
+		find . -type f -name "*.swp" -exec sudo rm -r {} + && \
+		find . -type f -name "*.swo" -exec sudo rm -r {} + && \
+		git add . && \
+		git commit -m "updated nix system config" && \
+		git push && \
+		cd "$prevdir"
+	}
 
 		alias nixconf="sudo nvim /etc/nixos/configuration.nix"
 
@@ -102,7 +114,7 @@
 
 		alias shaderebuild="home-manager switch"
 
-		alias nixrebuild="sudo nixos-rebuild switch"
+		alias nixrebuild=nix_rebuild
 
 		alias nixinstall=nix_install
 
@@ -117,3 +129,5 @@
 		alias nixinstalled=nix_installed
 
 		alias nixhelp=nix_help
+
+		alias rebuildall="shaderebuild && nixrebuild"
