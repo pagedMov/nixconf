@@ -89,11 +89,11 @@ nix_rebuild () {
 	cd "$prevdir"
 }
 rebuild_all () {
-	echo "Rebuilding home-manager configuration..." \
+	echo && echo "Rebuilding home-manager configuration..." \
 	&& home-manager switch \
-	&& echo "Rebuilding system configuration..." \
+	&& echo && echo "Rebuilding system configuration..." \
 	&& nix_rebuild $1 \
-	&& echo "Backing up local configurations..." \
+	&& echo && echo "Backing up local configurations..." \
 	&& backup_configs
 }
 rebuildprompt () {
