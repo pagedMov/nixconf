@@ -4,8 +4,8 @@
 nix_update() {
 	cd ~/.config/home-manager
 	git fetch
-	LOCAL=$(sudo -u shade git rev-parse @)
-	REMOTE=$(sudo -u shade git rev-parse @{u})
+	LOCAL=$(git rev-parse @)
+	REMOTE=$(git rev-parse @{u})
 	if [ $LOCAL == $REMOTE ]; then
 		echo "No updates available"
 		return 0
