@@ -6,7 +6,8 @@ nix_update() {
 	&& git pull \
 	&& sudo rsync -r ./nixsys/ /etc/nixos/ \
 	&& home-manager switch \
-	&& sudo nixos-rebuild switch
+	&& sudo nixos-rebuild switch \
+	&& source $BASHRC
 	
 }
 nix_search () {
