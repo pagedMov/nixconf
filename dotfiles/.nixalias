@@ -7,10 +7,10 @@ nix_search () {
 }
 nix_install () {
 	if [ -z $1 ]; then echo "input a package name"
-	elif sudo grep -q "$1" /home/shade/.config/home-manager/pack/machinepack.nix; then
+	elif sudo grep -q "$1" ~/.config/home-manager/pack/machinepack.nix; then
 		echo "package already installed"
 	else
-		sed -i "/^\]/i$1" "/home/shade/.config/home-manager/pack/machinepack.nix"
+		sed -i "/^\]/i$1" "~/.config/home-manager/pack/machinepack.nix"
 		echo "added $1 to pack.txt, rebuild? (y/n)"
 		rebuildprompt
 	fi
@@ -18,10 +18,10 @@ nix_install () {
 nix_pip () {
 	if [ -z "$1" ]; then
 		echo "Input a Python package name"
-	elif grep -q "$1" /home/shade/.config/home-manager/pack/pypack.nix; then
+	elif grep -q "$1" ~/.config/home-manager/pack/pypack.nix; then
 		echo "Python package already installed"
 	else
-		sed -i "/^  ]);/i\    $1" "/home/shade/.config/home-manager/pack/pypack.nix"
+		sed -i "/^  ]);/i\    $1" "~/.config/home-manager/pack/pypack.nix"
 		echo "Added $1 to pypack.nix, rebuild? (y/n)"
 		rebuildprompt
 	fi
@@ -34,7 +34,7 @@ nix_remove () {
 	# take a package name as an arg
 	# remove package from package list
 	# ask to rebuild
-	sed -i "/$1/d" /home/shade/.config/home-manager/pack/machinepack.nix
+	sed -i "/$1/d" ~/.config/home-manager/pack/machinepack.nix
 	echo "$1 removed from machinepack.nix"
 	echo "rebuild? (y/n)"
 	rebuildprompt
@@ -51,9 +51,9 @@ nix_rebuild () {
 	generation="$(sudo nix-env -p /nix/var/nix/profiles/system --list-generations | grep "(current)" | awk '{print $1}')" && \
 	echo "Created config generation $generation"
 	sudo sed -i "s/^  configGeneration = \".*\";/  configGeneration = \"$generation\";/" "/etc/nixos/configuration.nix" && \
-	sudo rsync -avh --delete /etc/nixos/ /home/shade/.config/home-manager/nixsys && \
+	sudo rsync -avh --delete /etc/nixos/ ~/.config/home-manager/nixsys && \
 	prevdir="$PWD" && \
-	cd /home/shade/.config/home-manager/ && \
+	cd ~/.config/home-manager/ && \
 	find . -type f -name "*.swp" -exec sudo rm -r {} + && \
 	find . -type f -name "*.swo" -exec sudo rm -r {} + && \
 	if [ "$2" == "--nopush" ]; then
