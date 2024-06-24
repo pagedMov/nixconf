@@ -3,7 +3,13 @@
 # Functions
 nix_search () {
 	# instead of the builtin nixpkgs search, run through a cached list of packages
-	echo "$(cat ~/bin/packages.list)" | grep "$1" | awk '{print $1}'
+	list="$(cat ~/bin/packages.list | grep $1 | awk '{print $1}')"
+	if [ ! -f "~/bin/packages.list" ] || [ ! -s "~/bin/packages.list" ]; then
+		echo "Cached package list not found. Try updatenixlist"
+		return 1;
+	else
+		echo $list
+	fi
 }
 nix_install () {
 	if [ -z $1 ]; then echo "input a package name"
@@ -105,7 +111,9 @@ nix_help () {
 # Aliases
 alias nixconf="sudo -E neovide /etc/nixos/configuration.nix"
 
-alias shadeconf="home-manager edit"
+alias homeconf="home-manager edit"
+
+alias shadeconf="nvim ~/.config/home-manager/modules/machine-settings.nix"
 
 alias nixhardconf="sudo -E neovide /etc/nixos/hardware-configuration.nix"
 
