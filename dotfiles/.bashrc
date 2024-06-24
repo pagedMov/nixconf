@@ -34,8 +34,11 @@
 		grimblast save area ~/Pictures/screens/"$timedate".png
 	}
 	push_changes() {
+		prevdir="$PWD"
 		cd $HM_DIR
-		git commit -a 
+		git commit -a \
+		&& git push \
+		&& cd $prevdir
 	}
 
 # Alias
@@ -45,4 +48,5 @@
 	alias nvimtest="nvim $HM_DIR/dotfiles/nvim-init.lua -- -u $HM_DIR/dotfiles/nvim-init.lua"
 	alias savescreen=save_screen
 	alias serversend=send_to_server
+	alias hmpush=push_changes
 	source ~/.config/home-manager/dotfiles/.nixalias
