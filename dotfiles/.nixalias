@@ -89,7 +89,12 @@ nix_rebuild () {
 	cd "$prevdir"
 }
 rebuild_all () {
-	home-manager switch && nix_rebuild $1 && backup_configs
+	echo "Rebuilding home-manager configuration..." \
+	&& home-manager switch \
+	&& echo "Rebuilding system configuration..." \
+	&& nix_rebuild $1 \
+	&& echo "Backing up local configurations..." \
+	&& backup_configs
 }
 rebuildprompt () {
 	undecided=true; while $undecided; do read yn
