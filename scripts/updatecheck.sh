@@ -1,5 +1,6 @@
 #!/run/current-system/sw/bin/bash
 
+# This script sends a notification if there is the system's repo hash is different from the remote hash
 prevdir="$PWD"
 cd ~/.config/home-manager
 
