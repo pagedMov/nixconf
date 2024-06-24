@@ -4,6 +4,9 @@
 # sudo nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 # sudo nix-channel --update
 
+# Note - this file is not meant to be edited lightly. This is meant to be the core configuration shared across many machines.
+# If you wish to make changes to your current environment, use hardware-specific.nix in /etc/nixos/modules
+
 { config, lib, pkgs, ... }:
 {
 system.stateVersion = "24.05";
@@ -90,17 +93,5 @@ nix.gc = {
 	dates = "weekly";
 	options = "-d";
 	persistent = true;
-};
-
-systemd.services = {
-	update_config={
-		description = "Check Nix Config Repo";
-		after = [ "network.target" "multi-user.target" ];
-		wantedBy = [ "multi-user.target" ];
-		serviceConfig = {
-			Type = "oneshot";
-			ExecStart = "/etc/nixos/scripts/updatecheck.sh";
-		};
-	};
 };
 }

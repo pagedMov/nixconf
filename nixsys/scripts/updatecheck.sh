@@ -17,7 +17,7 @@ if [ "$LOCAL" != "$REMOTE" ]; then
 	echo "Update found"
 	echo "Synchronizing configuration with repository..."
 	sudo -u shade git pull
-	sudo -u shade rsync "/home/shade/.config/home-manager/nixsys/" "/etc/nixos/"
+	sudo -u shade rsync -r "/home/shade/.config/home-manager/nixsys/" "/etc/nixos/"
 	nixos-rebuild switch
 	echo "1" > .update
 else

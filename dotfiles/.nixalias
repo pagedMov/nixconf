@@ -134,7 +134,7 @@ alias nixconf="sudo -E neovide /etc/nixos/configuration.nix"
 
 alias homeconf="home-manager edit"
 
-alias shadeconf="nvim $HOME/.config/home-manager/modules/machine-settings.nix"
+alias shadeconf="nvim $HOME/.config/home-manager/hm-modules/machine-settings.nix"
 
 alias nixhardconf="sudo -E neovide /etc/nixos/hardware-configuration.nix"
 

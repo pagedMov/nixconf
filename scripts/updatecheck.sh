@@ -4,13 +4,13 @@ prevdir="$PWD"
 cd ~/.config/home-manager
 
 git fetch origin
-updatefile=$(cat .update)
+LOCAL=$(sudo -u shade git rev-parse @)
+REMOTE=$(sudo -u shade git rev-parse @{u})
 
-if [ "$updatefile" == "1" ]; then
-	echo "Update found"
-	echo "Synchronizing configuration with repository..."
-	git pull
-	home-manager switch
-	echo "0" > .update
+
+if [ "$LOCAL" != "$REMOTE" ]; then
+	notify-send "New config update available" "There is a new version of your configuration on the github repo. Do 'nixupdate' to install it to your system."
+else
+	echo "No update found"
 fi
 cd "$prevdir"
