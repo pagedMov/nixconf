@@ -125,40 +125,41 @@ rebuildprompt () {
 done
 }
 backup_configs () {
-		local ip="$(ip -4 addr show $(ip route show default | awk '/default/ {print $5}') | awk '/inet / {print $2}' | cut -d/ -f1)"
-		local local_user="$(cat $HM_DIR/.user)"
-		local server_user="pagedmov"
-		local server_address="192.168.1.206"
-		local destination_path="/home/pagedmov/backup/$local_user"
-		ping -c 1 -W 1 $server_address
-		ping -c 1 -W 1 $server_address | grep -q "100% packet loss"
-		retries=0
-		if [ $? -eq 0 ]; then
-			while true; do
-				echo "Connection failed."
-				if [ $retries -eq 4 ]; then
-					echo "Connection failed after 4 retries. Aborting backup."
-					return 1
-				else
-					retries=$((retries + 1))
-					echo "Retrying...\(Attempt #$retries\)"
-					ping -c 1 -W 1 $server_address
-					if [ $? -eq 0 ]; then
-						break
-					else
-						sleep 1
-						continue
-					fi
-				fi
-			done
-		else
-			ssh ${server_user}@${server_address} "mkdir -p $destination_path"
-			ssh ${server_user}@${server_address} "mkdir -p $destination_path/sys"
-			ssh ${server_user}@${server_address} "mkdir -p $destination_path/home"
-			scp "/etc/nixos/modules/hardware-specific.nix" "${server_user}@${server_address}:${destination_path}/sys"
-			scp "$HM_DIR/hm-modules/machine-settings.nix" "${server_user}@${server_address}:${destination_path}/home"
-			echo "Server backup complete"
-		fi
+    local ip="$(ip -4 addr show $(ip route show default | awk '/default/ {print $5}') | awk '/inet / {print $2}' | cut -d/ -f1)"
+    local local_user="$(cat $HM_DIR/.user)"
+    local server_user="pagedmov"
+    local server_address="192.168.1.206"
+    local destination_path="/home/pagedmov/backup/$local_user"
+
+    ping -c 1 -W 1 $server_address | grep -q "100% packet loss"
+    retries=0
+    if [ $? -ne 0 ]; then
+        while true; do
+            echo "Connection failed."
+            if [ $retries -eq 4 ]; then
+                echo "Connection failed after 4 retries. Aborting backup."
+                return 1
+            else
+                retries=$((retries + 1))
+                echo "Retrying... (Attempt #$retries)"
+                ping -c 1 -W 1 $server_address | grep -q "100% packet loss"
+                if [ $? -ne 0 ]; then
+                    break
+                else
+                    sleep 1
+                    continue
+                fi
+            fi
+        done
+    fi
+
+	echo "Found server."
+    ssh ${server_user}@${server_address} "mkdir -p $destination_path"
+    ssh ${server_user}@${server_address} "mkdir -p $destination_path/sys"
+    ssh ${server_user}@${server_address} "mkdir -p $destination_path/home"
+    scp "/etc/nixos/modules/hardware-specific.nix" "${server_user}@${server_address}:${destination_path}/sys"
+    scp "$HM_DIR/hm-modules/machine-settings.nix" "${server_user}@${server_address}:${destination_path}/home"
+    echo "Server backup complete"
 }
 nix_help () {
 	echo
