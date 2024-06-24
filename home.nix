@@ -7,8 +7,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  homePkgs = import /home/shade/.config/home-manager/pack/homepack.nix { inherit pkgs; };
-  fontPackages = import /home/shade/.config/home-manager/pack/fontpack.nix { inherit pkgs; };
+  machinePkgs = import /home/shade/.config/home-manager/pack/machinepack.nix { inherit pkgs; };
   pypack = import ./pack/pypack.nix { inherit pkgs; };
 in
 {
@@ -22,7 +21,78 @@ in
   home.stateVersion = "24.11";
 
   fonts.fontconfig.enable = true;
-  home.packages = with pkgs; [ pypack.pythonWithPackages ] ++ fontPackages ++ homePkgs;
+  home.packages = with pkgs; [ pypack.pythonWithPackages ] ++ machinePkgs ++ with pkgs; [
+	firefox
+	jetbrains-mono
+	nerdfonts
+	waybar
+	tree
+	rofi-wayland
+	hello
+	hyprpaper
+	hyprpicker
+	gimp
+	vlc
+	audacity
+	spotify
+	spotifyd
+	nwg-look
+	glib
+	zathura
+	font-awesome
+	nerdfonts
+	chromium
+	p7zip
+	wineWayland
+	grc
+	discord
+	slurp
+	grimblast
+	playerctl
+	waybar-mpris
+	spotify-player
+	vimgolf
+	ncurses
+	google-chrome
+	thunderbird
+	galculator
+	virt-manager
+	godot_4
+	blender
+	jdk
+	ant
+	mono
+	w3m
+	brave
+	wl-clipboard
+	libreoffice
+	gnumake
+	eww
+	vbam
+	gdb
+	qimgv
+	bc
+	socat
+	hyprland-workspaces
+	uhk-udev-rules
+	uhk-agent
+	qbittorrent
+	mcomix
+	libnotify
+	dunst
+	yt-dlp
+	brightnessctl
+	xdotool
+	neovim
+	vimPlugins.lazy-nvim
+	pyright
+	lua-language-server
+	lsof
+	service-wrapper
+	clang-tools
+	neovide
+]
+;
   nixpkgs.config.allowUnfree = true;
   home.sessionVariables = {
   	NVIM_CONFIG = "/home/shade/.config/nvim/init.lua";
