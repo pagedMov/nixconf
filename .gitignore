@@ -2,4 +2,5 @@ ai_key.lua
 *.swp
 *.swo
 .update
-hardware-configuration.nix
+nixsys/hardware-configuration.nix
+nixsys/modules/hardware-specific.nix
