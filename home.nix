@@ -21,7 +21,7 @@ in
   home.stateVersion = "24.11";
 
   fonts.fontconfig.enable = true;
-  home.packages = with pkgs; [ pypack.pythonWithPackages ] ++ machinePkgs ++ with pkgs; [
+  home.packages = with pkgs; [ pypack.pythonWithPackages ] ++ machinePkgs ++ [
 	firefox
 	jetbrains-mono
 	nerdfonts
