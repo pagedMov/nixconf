@@ -28,12 +28,16 @@
 
 		scp "$file_path" "${server_user}@${server_address}:${destination_path}"
 	}
+	save_screen() {
+		timedate="$(date +"%H:%M_%m-%d-%y")"
+		grimblast save area ~/Pictures/screens/"$timedate".png
+	}
 
 # Alias
 	alias nvim="neovide"
 	alias win10on="sudo virsh start win10 && sudo virsh attach-device win10 /home/shade/vmStorage/devices/headset.xml"
 	alias win10off="sudo virsh shutdown win10 && sudo virsh detach-device win10 /home/shade/vmStorage/devices/headset.xml"
 	alias nvimtest="nvim $HM_DIR/dotfiles/nvim-init.lua -- -u $HM_DIR/dotfiles/nvim-init.lua"
-	alias savescreen="grimblast save area ~/Pictures/screens/\"$(date).png\""
+	alias savescreen=save_screen
 	alias serversend=send_to_server
 	source /home/shade/.config/home-manager/dotfiles/.nixalias

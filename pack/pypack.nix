@@ -21,6 +21,7 @@ let
     pynotifier
     python-daemon
     flask
+    nltk
   ]);
 in
 {
