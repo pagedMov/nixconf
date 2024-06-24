@@ -12,7 +12,7 @@ nix_update() {
 nix_search () {
 	# instead of the builtin nixpkgs search, run through a cached list of packages
 	list="$(cat ~/bin/packages.list | grep $1 | awk '{print $1}')"
-	if [ ! -f "~/bin/packages.list" ] || [ ! -s "~/bin/packages.list" ]; then
+	if [ ! -f "$HOME/bin/packages.list" ] || [ ! -s "$HOME/bin/packages.list" ]; then
 		echo "Cached package list not found. Try updatenixlist"
 		return 1;
 	else
@@ -24,7 +24,7 @@ nix_install () {
 	elif sudo grep -q "$1" ~/.config/home-manager/pack/machinepack.nix; then
 		echo "package already installed"
 	else
-		sed -i "/^\]/i$1" "~/.config/home-manager/pack/machinepack.nix"
+		sed -i "/^\]/i$1" "$HOME/.config/home-manager/pack/machinepack.nix"
 		echo "added $1 to pack.txt, rebuild? (y/n)"
 		rebuildprompt
 	fi
@@ -35,7 +35,7 @@ nix_pip () {
 	elif grep -q "$1" ~/.config/home-manager/pack/pypack.nix; then
 		echo "Python package already installed"
 	else
-		sed -i "/^  ]);/i\    $1" "~/.config/home-manager/pack/pypack.nix"
+		sed -i "/^  ]);/i\    $1" "$HOME/.config/home-manager/pack/pypack.nix"
 		echo "Added $1 to pypack.nix, rebuild? (y/n)"
 		rebuildprompt
 	fi
@@ -121,7 +121,7 @@ alias nixconf="sudo -E neovide /etc/nixos/configuration.nix"
 
 alias homeconf="home-manager edit"
 
-alias shadeconf="nvim ~/.config/home-manager/modules/machine-settings.nix"
+alias shadeconf="nvim $HOME/.config/home-manager/modules/machine-settings.nix"
 
 alias nixhardconf="sudo -E neovide /etc/nixos/hardware-configuration.nix"
 
@@ -145,6 +145,6 @@ alias nixhelp=nix_help
 
 alias rebuildall="homerebuild && nixrebuild"
 
-alias updatenixlist="nix-env -qaP > ~/bin/packages.list"
+alias updatenixlist="nix-env -qaP > $HOME/bin/packages.list"
 
 alias nixupdate=nix_update

@@ -33,6 +33,10 @@
 		timedate="$(date +"%H:%M_%m-%d-%y")"
 		grimblast save area ~/Pictures/screens/"$timedate".png
 	}
+	push_changes() {
+		cd $HM_DIR
+		git commit -a 
+	}
 
 # Alias
 	alias nvim="neovide"
