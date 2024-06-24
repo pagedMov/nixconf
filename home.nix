@@ -91,8 +91,7 @@ in
 	service-wrapper
 	clang-tools
 	neovide
-]
-;
+];
   nixpkgs.config.allowUnfree = true;
   home.sessionVariables = {
   	NVIM_CONFIG = "/home/shade/.config/nvim/init.lua";

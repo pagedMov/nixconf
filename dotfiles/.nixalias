@@ -7,21 +7,11 @@ nix_search () {
 }
 nix_install () {
 	if [ -z $1 ]; then echo "input a package name"
-	elif sudo grep -q "$1" /home/shade/.config/home-manager/pack/homepack.nix; then
+	elif sudo grep -q "$1" /home/shade/.config/home-manager/pack/machinepack.nix; then
 		echo "package already installed"
 	else
-		sed -i "/^\]/i$1" "/home/shade/.config/home-manager/pack/homepack.nix"
+		sed -i "/^\]/i$1" "/home/shade/.config/home-manager/pack/machinepack.nix"
 		echo "added $1 to pack.txt, rebuild? (y/n)"
-		rebuildprompt
-	fi
-}
-nix_install_font () {
-	if [ -z $1 ]; then echo "input a package name"
-	elif sudo grep -q "$1" /home/shade/.config/home-manager/pack/fontpack.nix; then
-		echo "package already installed"
-	else
-		sed -i "/^\]/i$1" "/home/shade/.config/home-manager/pack/fontpack.nix"
-		echo "added $1 to fontpack.txt, rebuild? (y/n)"
 		rebuildprompt
 	fi
 }
@@ -44,8 +34,8 @@ nix_remove () {
 	# take a package name as an arg
 	# remove package from package list
 	# ask to rebuild
-	sed -i "/$1/d" /home/shade/.config/home-manager/pack/homepack.nix
-	echo "$1 removed from homepack.nix"
+	sed -i "/$1/d" /home/shade/.config/home-manager/pack/machinepack.nix
+	echo "$1 removed from machinepack.nix"
 	echo "rebuild? (y/n)"
 	rebuildprompt
 }
@@ -92,17 +82,6 @@ rebuildprompt () {
 	fi
 done
 }
-nix_installed () {
-	if [ -n "$1" ] && [ $1 == "open" ]; then
-		nvim /home/shade/.config/home-manager/pack/homepack.nix
-		return 0
-	elif [ -n "$1" ] && [ $1 != "open" ]; then
-		echo "invalid option"
-		return 1
-	else
-		cat /home/shade/.config/home-manager/pack/homepack.nix
-	fi
-}
 nix_help () {
 	echo
 	echo "--- config commands ---" \
@@ -112,12 +91,11 @@ nix_help () {
 		&& echo "nixfind - find path to command" \
 		&& echo "nixrebuild - rebuild nixos system" \
 		&& echo "shaderebuild - rebuild home-manager config" \
+		&& echo "rebuildall <commit msg> - rebuild home-manager and nixos, then commit changes to github" \
 		&& echo \
 		&& echo "--- package commands ---" \
 		&& echo "nixsearch <pkg> - search for a package" \
-		&& echo "nixinstalled <?open> - list installed packages, or open pack.nix with \"open\" arg" \
 		&& echo "nixinstall <pkg> - install a package" \
-		&& echo "nixinstallfont <pkg> - install a font" \
 		&& echo "nixpip <pkgs> - install a python lib" \
 		&& echo "nixremove <pkg> - remove a package" \
 		&& echo "nixhelp - show this message"
@@ -137,15 +115,11 @@ nix_help () {
 
 		alias nixinstall=nix_install
 
-		alias nixinstallfont=nix_install_font
-
 		alias nixremove=nix_remove
 
 		alias nixfind=nix_find_path
 
 		alias nixpip=nix_pip
-
-		alias nixinstalled=nix_installed
 
 		alias nixhelp=nix_help
 
