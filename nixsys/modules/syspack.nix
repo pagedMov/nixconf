@@ -3,20 +3,14 @@
 with pkgs; [
 	wget
 	vim
-	kanata
 	mkinitcpio-nfs-utils
-	gtk3
 	gawk
 	kitty
-	polkit-kde-agent
 	polkit
 	inetutils
 	less
 	more
-	unionfs-fuse
 	rsync
-	rsnapshot
-	snapper
 	git
 	docker
 	alsa-utils
@@ -37,19 +31,13 @@ with pkgs; [
 	file
 	gcc
 	htop
-	tmux
 	tree
 	grc
 	gnupg
+	ranger
 	ffmpeg
 	openssh
 	nmap
-	iotop
-	libvirt
-	qemu_full
-	virtio-win
-	bridge-utils
-	qt6ct
 	dbus
 	usbutils
 	home-manager

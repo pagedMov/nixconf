@@ -16,13 +16,6 @@ in
 # Use the systemd-boot EFI boot loader.
 	boot.loader.systemd-boot.enable = true;
 	boot.loader.efi.canTouchEfiVariables = true;
-	boot.initrd.kernelModules = [
-		"vfio-pci"
-			"vfio"
-			"xhci_pci"
-			"amdgpu"
-	];
-	boot.kernelParams = [ "amd_iommu=on" "iommu=pt" "vfio-pci.ids=15b8,1002:73ff,1002:ab28" ];
 	nixpkgs.config.allowUnfree = true;
 #  environment.etc."udev/rules.d/50-uhk60.rules".text = ''
 #  SUBSYSTEM=="input", ATTRS{idVendor}=="1d50", ATTRS{idProduct}=="612[0-7]", GROUP="input", MODE="0660"
