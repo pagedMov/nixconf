@@ -1,7 +1,7 @@
 #!/run/current-system/sw/bin/bash
 
 prevdir="$PWD"
-cd /home/shade/.config/home-manager
+cd ~/.config/home-manager
 
 git fetch origin
 updatefile=$(cat .update)
