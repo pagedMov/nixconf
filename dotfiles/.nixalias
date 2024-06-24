@@ -7,7 +7,8 @@ nix_update() {
 	&& sudo rsync -r ./nixsys/ /etc/nixos/ \
 	&& home-manager switch \
 	&& sudo nixos-rebuild switch \
-	&& source $BASHRC
+	&& source $BASHRC \
+	&& echo "Update complete"
 	
 }
 nix_search () {
