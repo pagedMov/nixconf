@@ -20,14 +20,15 @@ nix_search () {
 	fi
 }
 home_install () {
-	if [ -z $1 ]; then echo "input a package name"
-	elif sudo grep -q "$1" ~/.config/home-manager/pack/machinepack.nix; then
-		echo "package already installed"
-	else
-		sed -i "/^\]/i$1" "$HOME/.config/home-manager/pack/machinepack.nix"
-		echo "added $1 to pack.txt, rebuild? (y/n)"
-		rebuildprompt
-	fi
+    if [ -z "$1" ]; then
+        echo "Input a package name"
+    elif sudo grep -q "$1" $HM_DIR/hm-modules/machine-settings.nix; then
+        echo "Package already installed"
+    else
+        sudo sed -i "/home.packages = with pkgs; \[/ a \ \ \ \ $1" $HM_DIR/hm-modules/machine-settings.nix
+        echo "Added $1 to machine-specific.nix, rebuild? (y/n)"
+        rebuildprompt
+    fi
 }
 nix_install () {
     if [ -z "$1" ]; then
@@ -67,11 +68,6 @@ nix_remove () {
 nix_rebuild () {
 	# take a commit message as an arg
 	# rebuild the nixos system, then push changes to github
-	if [ "$#" -eq 0 ]; then
-		echo "Please provide a commit message"
-		return 1
-	fi
-	message="$1"
 	sudo nixos-rebuild switch && \
 	generation="$(sudo nix-env -p /nix/var/nix/profiles/system --list-generations | grep "(current)" | awk '{print $1}')" && \
 	echo "Created config generation $generation"
@@ -81,14 +77,19 @@ nix_rebuild () {
 	cd ~/.config/home-manager/ && \
 	find . -type f -name "*.swp" -exec sudo rm -r {} + && \
 	find . -type f -name "*.swo" -exec sudo rm -r {} + && \
-	if [ "$2" == "--nopush" ]; then
+	if [ "$#" == 0 ]; then
+		echo "No commit message provided. Exiting without pushing changes."
 		cd "$prevdir"
 		return 0
 	fi
+	message="$1"
 	git add . && \
 	git commit -m "$message" && \
 	git push && \
 	cd "$prevdir"
+}
+rebuild_all () {
+	home-manager switch && nix_rebuild $1 && backup_configs
 }
 rebuildprompt () {
 	undecided=true; while $undecided; do read yn
@@ -121,7 +122,7 @@ backup_configs () {
 			ssh ${server_user}@${server_address} "mkdir -p $destination_path"
 			ssh ${server_user}@${server_address} "mkdir -p $destination_path/sys"
 			ssh ${server_user}@${server_address} "mkdir -p $destination_path/home"
-			scp "$HM_DIR/nixsys/modules/hardware-specific.nix" "${server_user}@${server_address}:${destination_path}/sys"
+			scp "/etc/nixos/modules/hardware-specific.nix" "${server_user}@${server_address}:${destination_path}/sys"
 			scp "$HM_DIR/hm-modules/machine-settings.nix" "${server_user}@${server_address}:${destination_path}/home"
 			echo "Server backup complete"
 		fi
@@ -176,7 +177,7 @@ alias nixpip=nix_pip
 
 alias nixhelp=nix_help
 
-alias rebuildall="homerebuild && nixrebuild && nixbackup"
+alias rebuildall=rebuild_all
 
 alias updatenixlist="nix-env -qaP > $HOME/bin/packages.list"
 
