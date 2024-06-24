@@ -1,6 +1,6 @@
 #!/run/current-system/sw/bin/bash
 
-
+# Functions
 nix_search () {
 	# instead of the builtin nixpkgs search, run through a cached list of packages
 	echo "$(cat ~/bin/packages.list)" | grep "$1" | awk '{print $1}'
@@ -87,10 +87,11 @@ nix_help () {
 	echo "--- config commands ---" \
 		&& echo "nixconf - edit system config" \
 		&& echo "nixhardconf - edit hardware config" \
+		&& echo "nixmachconf - edit machine-specific config" \
 		&& echo "shadeconf - edit home-manager config" \
 		&& echo "nixfind - find path to command" \
 		&& echo "nixrebuild - rebuild nixos system" \
-		&& echo "shaderebuild - rebuild home-manager config" \
+		&& echo "homerebuild - rebuild home-manager config" \
 		&& echo "rebuildall <commit msg> - rebuild home-manager and nixos, then commit changes to github" \
 		&& echo \
 		&& echo "--- package commands ---" \
@@ -101,28 +102,31 @@ nix_help () {
 		&& echo "nixhelp - show this message"
 	}
 
-		alias nixconf="sudo -E neovide /etc/nixos/configuration.nix"
+# Aliases
+alias nixconf="sudo -E neovide /etc/nixos/configuration.nix"
 
-		alias shadeconf="home-manager edit"
+alias shadeconf="home-manager edit"
 
-		alias nixhardconf="sudo nvim /etc/nixos/hardware-configuration.nix"
+alias nixhardconf="sudo -E neovide /etc/nixos/hardware-configuration.nix"
 
-		alias nixsearch=nix_search
+alias nixmachconf="sudo -E neovide /etc/nixos/modules/hardware-specific.nix"
 
-		alias shaderebuild="home-manager switch"
+alias nixsearch=nix_search
 
-		alias nixrebuild=nix_rebuild
+alias homerebuild="home-manager switch"
 
-		alias nixinstall=nix_install
+alias nixrebuild=nix_rebuild
 
-		alias nixremove=nix_remove
+alias nixinstall=nix_install
 
-		alias nixfind=nix_find_path
+alias nixremove=nix_remove
 
-		alias nixpip=nix_pip
+alias nixfind=nix_find_path
 
-		alias nixhelp=nix_help
+alias nixpip=nix_pip
 
-		alias rebuildall="shaderebuild && nixrebuild"
-		
-		alias updatenixlist="nix-env -qaP > ~/bin/packages.list"
+alias nixhelp=nix_help
+
+alias rebuildall="homerebuild && nixrebuild"
+
+alias updatenixlist="nix-env -qaP > ~/bin/packages.list"

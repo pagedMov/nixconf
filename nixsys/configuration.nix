@@ -9,7 +9,6 @@
 system.stateVersion = "24.05";
 imports = [
 	./hardware-configuration.nix
-	<home-manager/nixos>
 	./modules/hardware-specific.nix 
 	./modules/issue.nix
 ];
@@ -84,17 +83,6 @@ services.printing.enable = true;
 services.pipewire = {
 	enable = true;
 	pulse.enable = true;
-};
-
-users.users.shade= {
-	initialPassword = "1234";
-	isNormalUser = true;
-	extraGroups = [ "wheel" ];
-		packages = with pkgs; [
-		];
-};
-home-manager.users.shade = { pkgs, ...}: {
-	imports = [ /home/shade/.config/home-manager/home.nix ];
 };
 
 nix.gc = {
