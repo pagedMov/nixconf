@@ -6,3 +6,4 @@ pack/machinepack.nix
 nixsys/hardware-configuration.nix
 nixsys/modules/hardware-specific.nix
 hm-modules/machine-settings.nix
+.user
