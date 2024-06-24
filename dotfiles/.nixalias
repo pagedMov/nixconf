@@ -19,7 +19,7 @@ nix_search () {
 		echo $list
 	fi
 }
-nix_install () {
+home_install () {
 	if [ -z $1 ]; then echo "input a package name"
 	elif sudo grep -q "$1" ~/.config/home-manager/pack/machinepack.nix; then
 		echo "package already installed"
@@ -28,6 +28,17 @@ nix_install () {
 		echo "added $1 to pack.txt, rebuild? (y/n)"
 		rebuildprompt
 	fi
+}
+nix_install () {
+    if [ -z "$1" ]; then
+        echo "Input a package name"
+    elif sudo grep -q "$1" /etc/nixos/modules/hardware-specific.nix; then
+        echo "Package already installed"
+    else
+        sudo sed -i "/environment.systemPackages = with pkgs; \[/ a \ \ \ \ $1" /etc/nixos/modules/hardware-specific.nix
+        echo "Added $1 to hardware-specific.nix, rebuild? (y/n)"
+        rebuildprompt
+    fi
 }
 nix_pip () {
 	if [ -z "$1" ]; then
@@ -84,7 +95,8 @@ rebuildprompt () {
 	if [ $yn == "y" ]; then
 		echo "rebuilding..."
 		sleep 1
-		home-manager switch
+		home-manager switch \
+		&& sudo nixos-rebuild switch
 		undecided=false
 		echo " "
 		echo "rebuild complete."
@@ -110,7 +122,8 @@ nix_help () {
 		&& echo \
 		&& echo "--- package commands ---" \
 		&& echo "nixsearch <pkg> - search for a package" \
-		&& echo "nixinstall <pkg> - install a package" \
+		&& echo "nixinstall <pkg> - install a system package" \
+		&& echo "homeinstall <pkg> - install a user package" \
 		&& echo "nixpip <pkgs> - install a python lib" \
 		&& echo "nixremove <pkg> - remove a package" \
 		&& echo "nixhelp - show this message"
@@ -132,6 +145,8 @@ alias nixsearch=nix_search
 alias homerebuild="home-manager switch"
 
 alias nixrebuild=nix_rebuild
+
+alias homeinstall=home_install
 
 alias nixinstall=nix_install
 
