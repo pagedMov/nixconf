@@ -10,7 +10,8 @@ in
 	imports =
 		[ # Include the results of the hardware scan.
 		./hardware-configuration.nix
-			<home-manager/nixos>
+		<home-manager/nixos>
+		./modules/hardware-specific.nix 
 		];
 
 # Use the systemd-boot EFI boot loader.
@@ -49,7 +50,6 @@ in
 Run '\e[1;35mnixos-help\e[0m' for the NixOS manual.
 Run '\e[1;35mHyprland\e[0m' to enter the desktop environment.
 		'';
-	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
 # networking.hostName = "nixos"; # Define your hostname.
 # Pick only one of the below networking options.
@@ -58,7 +58,7 @@ Run '\e[1;35mHyprland\e[0m' to enter the desktop environment.
 	networking.hostName = "HAUNTER";
 	networking.nameservers = [
 		"68.94.156.9"
-			"68.94.157.9"
+		"68.94.157.9"
 	];
 
 # Set your time zone.
@@ -80,7 +80,6 @@ Run '\e[1;35mHyprland\e[0m' to enter the desktop environment.
 
 	programs.hyprland.enable = true;
 	programs.dconf.enable = true;
-	virtualisation.libvirtd.enable = true;
 
 # Enable the Plasma 5 Desktop Environment.
 # services.displayManager.sddm.enable = true;
@@ -146,14 +145,6 @@ Run '\e[1;35mHyprland\e[0m' to enter the desktop environment.
 	};
 
 	systemd.services = {
-		mount_windows={
-			description = "Mount Win10 VM";
-			wantedBy = [ "multi-user.target" ];
-			serviceConfig = {
-				Type = "oneshot";
-				ExecStart = "/etc/nixos/scripts/mountwin11.sh";
-			};
-		};
 		update_config={
 			description = "Check Nix Config Repo";
 			after = [ "network.target" "multi-user.target" ];
