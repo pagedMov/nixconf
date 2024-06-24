@@ -131,8 +131,26 @@ backup_configs () {
 		local server_address="192.168.1.206"
 		local destination_path="/home/pagedmov/backup/$local_user"
 		ping -c 1 -W 1 $server_address
-		if [ $? != 0 ]; then
-			echo "Could not reach the backup server"
+		ping -c 1 -W 1 $server_address | grep -q "100% packet loss"
+		retries=0
+		if [ $? -eq 0 ]; then
+			while true; do
+				echo "Connection failed."
+				if [ $retries -eq 4 ]; then
+					echo "Connection failed after 4 retries. Aborting backup."
+					return 1
+				else
+					retries=$((retries + 1))
+					echo "Retrying...\(Attempt #$retries\)"
+					ping -c 1 -W 1 $server_address
+					if [ $? -eq 0 ]; then
+						break
+					else
+						sleep 1
+						continue
+					fi
+				fi
+			done
 		else
 			ssh ${server_user}@${server_address} "mkdir -p $destination_path"
 			ssh ${server_user}@${server_address} "mkdir -p $destination_path/sys"
