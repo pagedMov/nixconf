@@ -1,5 +1,6 @@
 # Initialization commands
 	xhost si:localuser:root
+	clear
 
 # Environment variables
 	export PATH="$HOME/bin:$PATH"

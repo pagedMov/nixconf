@@ -14,7 +14,7 @@ imports = [
 ##### ENVIRONMENT INITIALIZATION #####
 ######################################
 home.enableNixpkgsReleaseCheck = false;
-home.stateVersion = "24.11";
+home.stateVersion = "24.05";
 
 fonts.fontconfig.enable = true;
 home.packages = with pkgs; [ pypack.pythonWithPackages ] ++ machinePkgs ++ [

@@ -1,6 +1,14 @@
 #!/run/current-system/sw/bin/bash
 
 # Functions
+nix_update() {
+	cd ~/.config/home-manager \
+	&& git pull \
+	&& sudo rsync -r ./nixsys/ /etc/nixos/ \
+	&& home-manager switch \
+	&& sudo nixos-rebuild switch
+	
+}
 nix_search () {
 	# instead of the builtin nixpkgs search, run through a cached list of packages
 	list="$(cat ~/bin/packages.list | grep $1 | awk '{print $1}')"
@@ -138,3 +146,5 @@ alias nixhelp=nix_help
 alias rebuildall="homerebuild && nixrebuild"
 
 alias updatenixlist="nix-env -qaP > ~/bin/packages.list"
+
+alias nixupdate=nix_update
