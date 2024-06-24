@@ -31,14 +31,27 @@
 	}
 	save_screen() {
 		timedate="$(date +"%H:%M_%m-%d-%y")"
+		mkdir -p ~/Pictures
+		mkdir -p ~/Pictures/screens
 		grimblast save area ~/Pictures/screens/"$timedate".png
 	}
 	push_changes() {
 		prevdir="$PWD"
 		cd $HM_DIR
-		git commit -a \
+		git commit -am "$1" \
 		&& git push \
 		&& cd $prevdir
+	}
+	alias_help() {
+		echo
+		echo "nvim - this opens Neovide and not Neovim" \
+		&& echo "win10on - This runs the windows 10 virtual machine on my desktop and connects my headset to it" \
+		&& echo "win10off - This turns off the windows 10 virtual machine and disconnects my headset" \
+		&& echo "nvimtest - this opens the neovim configuration and uses dotfiles/nvim-init.lua as the configuration used. Use this to make changes to the neovim config and test those changes" \
+		&& echo "savescreen - This will let you select an area on the screen, then will save that screenshot to ~/Pictures/screens" \
+		&& echo "serversend <file_path> - This sends a file to my server over the local network, it ends up in /home/pagedmov/inbox" \
+		&& echo "hmpush <commit_msg> - This will push the changes to the home-manager directory to the github repo. Does not send system-specific configuration files. You must provide a commit message after the alias." \
+		&& echo "aliashelp - Show this message"
 	}
 
 # Alias
@@ -49,4 +62,5 @@
 	alias savescreen=save_screen
 	alias serversend=send_to_server
 	alias hmpush=push_changes
+	alias aliashelp=alias_help
 	source ~/.config/home-manager/dotfiles/.nixalias

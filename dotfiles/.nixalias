@@ -134,23 +134,25 @@ backup_configs () {
 }
 nix_help () {
 	echo
+	echo "A question mark in the argument means it's optional'"
 	echo "--- config commands ---" \
-		&& echo "nixconf - edit system config" \
-		&& echo "nixhardconf - edit hardware config" \
-		&& echo "nixmachconf - edit machine-specific config" \
-		&& echo "shadeconf - edit home-manager config" \
-		&& echo "nixfind - find path to command" \
-		&& echo "nixrebuild - rebuild nixos system" \
-		&& echo "homerebuild - rebuild home-manager config" \
-		&& echo "rebuildall <commit msg> - rebuild home-manager and nixos, then commit changes to github" \
-		&& echo \
-		&& echo "--- package commands ---" \
-		&& echo "nixsearch <pkg> - search for a package" \
-		&& echo "nixinstall <pkg> - install a system package" \
-		&& echo "homeinstall <pkg> - install a user package" \
-		&& echo "nixpip <pkgs> - install a python lib" \
-		&& echo "nixremove <pkg> - remove a package" \
-		&& echo "nixhelp - show this message"
+	&& echo "nixconf - edit system config" \
+	&& echo "nixhardconf - edit hardware config" \
+	&& echo "nixmachconf - edit machine-specific config" \
+	&& echo "shadeconf - edit home-manager config" \
+	&& echo "nixfind - find path to command" \
+	&& echo "nixrebuild - rebuild nixos system" \
+	&& echo "homerebuild - rebuild home-manager config" \
+	&& echo "nixupdate - pull new config version from github and rebuild the user and system environments to reflect changes" \
+	&& echo "rebuildall <?commit msg> - rebuild home-manager and nixos, then commit changes to github if a commit msg is provided" \
+	&& echo \
+	&& echo "--- package commands ---" \
+	&& echo "nixsearch <pkg> - search for a package" \
+	&& echo "nixinstall <pkg> - install a system package" \
+	&& echo "homeinstall <pkg> - install a user package" \
+	&& echo "nixpip <pkgs> - install a python lib" \
+	&& echo "nixremove <pkg> - remove a package" \
+	&& echo "nixhelp - show this message"
 	}
 
 # Aliases
