@@ -5,9 +5,6 @@
 # sudo nix-channel --update
 
 { config, lib, pkgs, ... }:
-let
-configGeneration = "174";
-in
 {
 system.stateVersion = "24.05";
 imports = [
