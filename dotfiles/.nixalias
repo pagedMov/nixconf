@@ -2,6 +2,7 @@
 
 # Functions
 nix_update() {
+	prevdir="$PWD"
 	cd ~/.config/home-manager
 	git fetch
 	LOCAL=$(git rev-parse @)
@@ -15,7 +16,8 @@ nix_update() {
 		&& home-manager switch \
 		&& sudo nixos-rebuild switch \
 		&& source $BASHRC \
-		&& echo "Update complete"
+		&& echo "Update complete" \
+		&& cd $prevdir
 	fi
 	
 }
