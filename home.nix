@@ -31,6 +31,7 @@ home.file = {
 	".config/nvim/init.lua".source =		dotfiles/nvim-init.lua;
 	".config/neovide/init.lua".source =		dotfiles/nvim-init.lua;
 };
+
 home.packages = with pkgs; [
 	firefox
 	jetbrains-mono
@@ -48,7 +49,6 @@ home.packages = with pkgs; [
 	spotifyd
 	nwg-look
 	glib
-	zathura
 	font-awesome
 	nerdfonts
 	chromium

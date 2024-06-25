@@ -12,7 +12,6 @@
 		})
 	end
 	vim.opt.rtp:prepend(lazypath)
-	vim.g.nvim_ghost_server_port = 27121
 
 	require("lazy").setup({
 		{ -- LSP configuration
@@ -90,7 +89,6 @@
 		-- extra functionality --
 		"nvim-telescope/telescope.nvim",
 		"nvim-lua/plenary.nvim",
-		'subnut/nvim-ghost.nvim', -- Type into browser text boxes using nvim
 		'xeluxee/competitest.nvim', -- UI for competitive programming
 		"IogaMaster/neocord", -- Discord rich presence integration
 		"folke/trouble.nvim", -- Window for LSP errors/warnings
