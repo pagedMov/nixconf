@@ -181,7 +181,8 @@ nix_help () {
 	&& echo "homeinstall <pkg> - install a user package" \
 	&& echo "nixpip <pkgs> - install a python lib" \
 	&& echo "nixremove <pkg> - remove a package" \
-	&& echo "nixhelp - show this message"
+	&& echo "nixhelp - show this message" \
+	&& echo "updatenixlist - update cached list of nix packages"
 	}
 
 # Aliases
