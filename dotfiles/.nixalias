@@ -9,6 +9,7 @@ nix_update() {
 	REMOTE=$(git rev-parse @{u})
 	if [ $LOCAL == $REMOTE ]; then
 		echo "No updates available"
+		cd $prevdir
 		return 0
 	else
 		git pull \
