@@ -13,6 +13,7 @@
 	end
 	vim.opt.rtp:prepend(lazypath)
 
+	require('agtp')
 	require("lazy").setup({
 		{ -- LSP configuration
 			"neovim/nvim-lspconfig",

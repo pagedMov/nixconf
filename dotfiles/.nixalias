@@ -24,12 +24,12 @@ nix_update() {
 }
 nix_search () {
 	# instead of the builtin nixpkgs search, run through a cached list of packages
-	list="$(cat ~/bin/packages.list | grep $1 | awk '{print $1}')"
+	list="$(cat ~/bin/packages.list | grep $1)"
 	if [ ! -f "$HOME/bin/packages.list" ] || [ ! -s "$HOME/bin/packages.list" ]; then
 		echo "Cached package list not found. Try updatenixlist"
 		return 1;
 	else
-		echo $list
+		echo $list | sed 's/ /\n/g'
 	fi
 }
 home_install () {
@@ -86,7 +86,7 @@ nix_rebuild () {
 	sudo rsync -avh --delete /etc/nixos/ ~/.config/home-manager/nixsys && \
 	prevdir="$PWD" && \
 	cd ~/.config/home-manager/ && \
-	find . -type f -name "*.swp" -exec sudo rm -r {} + && \ # Remove swap files
+	find . -type f -name "*.swp" -exec sudo rm -r {} + && \
 	find . -type f -name "*.swo" -exec sudo rm -r {} + && \
 	if [ "$#" == 0 ]; then
 		echo "No commit message provided. Exiting without pushing changes."

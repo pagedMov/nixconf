@@ -7,6 +7,7 @@
 	export PS1="\n\[\033[1;38;2;176;0;176m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$ \[\033[0m\]"
 	export EDITOR="neovide"
 	export NVIM_CONFIG="$HOME/.config/nvim/init.lua"
+	export NVIM_LISTEN_ADDRESS="/tmp/nvimsock"
 	export BASHRC="$HOME/.config/home-manager/dotfiles/.bashrc"
 	export HYPRCONF="$HOME/.config/home-manager/dotfiles/hyprland.conf"
 	export HM_DIR="$HOME/.config/home-manager"
@@ -53,9 +54,12 @@
 		&& echo "hmpush <commit_msg> - This will push the changes to the home-manager directory to the github repo. Does not send system-specific configuration files. You must provide a commit message after the alias." \
 		&& echo "aliashelp - Show this message"
 	}
+	neovide_shell() {
+		nix-shell $HM_DIR/nix-shells/neovide.nix --run "neovide $*"
+	}
 
 # Alias
-	alias nvim="neovide"
+	alias nvim=neovide_shell
 	alias win10on="sudo virsh start win10 && sudo virsh attach-device win10 $HOME/vmStorage/devices/headset.xml"
 	alias win10off="sudo virsh shutdown win10 && sudo virsh detach-device win10 $HOME/vmStorage/devices/headset.xml"
 	alias nvimtest="nvim $HM_DIR/dotfiles/nvim-init.lua -- -u $HM_DIR/dotfiles/nvim-init.lua"
