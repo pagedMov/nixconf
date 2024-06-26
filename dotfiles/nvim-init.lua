@@ -193,6 +193,8 @@
 	vim.opt.termguicolors = true
 	vim.opt.ruler = true
 	vim.opt.scrolloff = 6
+	vim.opt.undofile = true
+	vim.opt.foldmethod = "indent"
 
 	vim.g.mapleader = "\\"
 
@@ -223,9 +225,9 @@
 
 -- AUTOCMD --------------------------------------------------
 
-	vim.api.nvim_create_autocmd('VimEnter', {
+	vim.api.nvim_create_autocmd({'BufReadPost', 'BufWinEnter'}, {
 		pattern = '*',
-		command = 'wincmd p',
+		command = 'normal! zR',
 	})
 
 	vim.api.nvim_create_autocmd('VimEnter', { -- terminal window
@@ -233,36 +235,14 @@
 		command = 'FloatermNew --wintype=float --name=shadeterm --position=topright --autoclose=0 --silent --cwd=<buffer> --titleposition=left',
 	})
 
-	vim.api.nvim_create_autocmd('VimEnter', {
-		pattern = '*',
-		command = 'set foldmethod=indent',
-	})
-
-	vim.api.nvim_create_autocmd('VimEnter', {
-		pattern = '*',
-		command = 'set undofile',
-	})
-
 	-- scrollbar
 	vim.api.nvim_create_augroup("ScrollbarCMDs", { clear = true })
-	vim.api.nvim_create_autocmd({
-		"WinScrolled",
-		"VimResized",
-		"QuitPre",
-		"WinEnter",
-		"FocusGained",
-	}, {
+	vim.api.nvim_create_autocmd({ "WinScrolled", "VimResized", "QuitPre", "WinEnter", "FocusGained", }, {
 		pattern = '*',
 		command = 'lua require("scrollbar").show()',
 		group = "ScrollbarCMDs",
 	})
-
-	vim.api.nvim_create_autocmd({
-		"WinLeave",
-		"BufLeave",
-		"BufWinLeave",
-		"FocusLost",
-	}, {
+	vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave", "BufWinLeave", "FocusLost", }, {
 		pattern = '*',
 		command = 'lua require("scrollbar").clear()',
 		group = "ScrollbarCMDs",
