@@ -82,24 +82,26 @@ nix_rebuild () {
 	# take a commit message as an arg
 	# rebuild the nixos system, then push changes to github
 	sudo nixos-rebuild switch && \
-	generation="$(sudo nix-env -p /nix/var/nix/profiles/system --list-generations | grep "(current)" | awk '{print $1}')" && \
 	echo "Created config generation $generation"
-	sudo sed -i "s/^  configGeneration = \".*\";/  configGeneration = \"$generation\";/" "/etc/nixos/configuration.nix" && \
 	sudo rsync -avh --delete /etc/nixos/ ~/.config/home-manager/nixsys && \
 	prevdir="$PWD" && \
 	cd ~/.config/home-manager/ && \
-	find . -type f -name "*.swp" -exec sudo rm -r {} + && \
+	find . -type f -name "*.swp" -exec sudo rm -r {} + && \ # Remove swap files
 	find . -type f -name "*.swo" -exec sudo rm -r {} + && \
 	if [ "$#" == 0 ]; then
 		echo "No commit message provided. Exiting without pushing changes."
 		cd "$prevdir"
 		return 0
+	elif [ "$1" == "commit" ]; then
+		git add . && \
+		git commit && \
+		git push && \
+		cd "$prevdir"
+	else 
+		echo "Invalid argument. try \"rebuildall commit\""
+		cd "$prevdir"
+		return 0
 	fi
-	message="$1"
-	git add . && \
-	git commit -m "$message" && \
-	git push && \
-	cd "$prevdir"
 }
 rebuild_all () {
 	echo && echo "Rebuilding home-manager configuration..." \
