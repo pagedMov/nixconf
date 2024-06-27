@@ -8,6 +8,7 @@
 	export EDITOR="neovide"
 	export NVIM_CONFIG="$HOME/.config/nvim/init.lua"
 	export NVIM_LISTEN_ADDRESS="/tmp/nvimsock"
+	export NVIM_DIR ="$HOME/.config/nvim"
 	export BASHRC="$HOME/.config/home-manager/dotfiles/.bashrc"
 	export HYPRCONF="$HOME/.config/home-manager/dotfiles/hyprland.conf"
 	export HM_DIR="$HOME/.config/home-manager"
@@ -67,4 +68,4 @@
 	alias serversend=send_to_server
 	alias hmpush=push_changes
 	alias aliashelp=alias_help
-	source ~/.config/home-manager/dotfiles/.nixalias
+	source $HM_DIR/dotfiles/.nixalias

@@ -12,8 +12,10 @@
 		})
 	end
 	vim.opt.rtp:prepend(lazypath)
+	local socket = require("socket")
+	local https = require("ssl.https")
 
-	require('agtp')
+	require("agtp")
 	require("lazy").setup({
 		{ -- LSP configuration
 			"neovim/nvim-lspconfig",
